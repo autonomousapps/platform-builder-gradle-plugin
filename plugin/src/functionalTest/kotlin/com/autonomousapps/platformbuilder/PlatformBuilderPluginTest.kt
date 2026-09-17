@@ -1,0 +1,118 @@
+// Copyright (c) 2026. Tony Robalik.
+// SPDX-License-Identifier: Apache-2.0
+package com.autonomousapps.platformbuilder
+
+import com.autonomousapps.kit.GradleBuilder.build
+import com.autonomousapps.platformbuilder.fixtures.PlatformBuilderFixture
+import org.assertj.core.api.Assertions.assertThat
+import org.gradle.util.GradleVersion
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
+import kotlin.io.path.readText
+
+internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
+
+  @MethodSource("gradleVersions")
+  @ParameterizedTest(name = "{0}")
+  fun `consuming project gets versions from the graph resolved by the platform`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = PlatformBuilderFixture()
+    val gradleProject = fixture.build()
+
+    // When (Android)
+    var dependencies = ":${PlatformBuilderFixture.LIB_ANDROID_NAME}:dependencies"
+    var result = build(gradleVersion, gradleProject.rootDir, dependencies, "--configuration", "debugRuntimeClasspath")
+
+    // Then
+    var output = result.output
+    assertThat(output).contains("com.squareup.okhttp3:okhttp -> 5.5.0")
+    assertThat(output).contains("com.squareup.okio:okio -> 3.18.1")
+    assertThat(output).contains("androidx.compose.animation:animation -> 1.12.0")
+
+    // When (Java)
+    dependencies = ":${PlatformBuilderFixture.LIB_JAVA_NAME}:dependencies"
+    result = build(gradleVersion, gradleProject.rootDir, dependencies, "--configuration", "runtimeClasspath")
+
+    // Then
+    output = result.output
+    assertThat(output).contains("com.squareup.okhttp3:okhttp -> 5.5.0")
+    assertThat(output).contains("com.squareup.okio:okio -> 3.18.1")
+    assertThat(output).contains("org.apache.commons:commons-collections4 -> 4.6.0")
+
+    // When (Kotlin)
+    dependencies = ":${PlatformBuilderFixture.LIB_KOTLIN_NAME}:dependencies"
+    result = build(gradleVersion, gradleProject.rootDir, dependencies, "--configuration", "runtimeClasspath")
+
+    // Then
+    output = result.output
+    assertThat(output).contains("com.squareup.okhttp3:okhttp -> 5.5.0")
+    assertThat(output).contains("com.squareup.okio:okio -> 3.18.1")
+    assertThat(output).contains("org.jetbrains.kotlinx:kotlinx-coroutines-core -> 1.11.0")
+  }
+
+  @MethodSource("gradleVersions")
+  @ParameterizedTest(name = "{0}")
+  fun `can publish platform`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = PlatformBuilderFixture()
+    val gradleProject = fixture.build()
+
+    // When (Android)
+    build(gradleVersion, gradleProject.rootDir, ":platform:publishPlatformPublicationToTestRepository")
+
+    // Then
+    val repo = gradleProject.singleArtifact("platform", "repo/com/example/platform/platform/0.1")
+    with(repo.asPath) {
+      assertThat(this).exists().isDirectory()
+      assertThat(resolve("platform-0.1.pom")).exists().isRegularFile()
+
+      val module = resolve("platform-0.1.module")
+      assertThat(module).exists().isRegularFile()
+      assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents)
+    }
+  }
+
+  @MethodSource("gradleVersions")
+  @ParameterizedTest(name = "{0}")
+  fun `can write platform`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = PlatformBuilderFixture()
+    val gradleProject = fixture.build()
+
+    // When (Android)
+    build(gradleVersion, gradleProject.rootDir, ":platform:buildPlatform")
+
+    // Then
+    val platform = gradleProject.singleArtifact("platform", "platform-builder/platform.gradle.kts")
+    assertThat(platform.asFile).exists()
+    assertThat(platform.asFile.readText()).isEqualTo(
+      """
+        |plugins {
+        |  id("java-platform")
+        |}
+        |
+        |javaPlatform {
+        |  allowDependencies()
+        |}
+        |
+        |dependencies {
+        |  constraints {
+        |    api("com.squareup.okhttp3:okhttp:5.5.0")
+        |    api("com.squareup.okhttp3:okhttp-jvm:5.5.0")
+        |    api("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
+        |    api("com.squareup.okio:okio:3.18.1")
+        |    api("org.jetbrains:annotations:13.0")
+        |    api("com.squareup.okio:okio-jvm:3.18.1")
+        |    runtime("com.squareup.okhttp3:okhttp:5.5.0")
+        |    runtime("com.squareup.okhttp3:okhttp-jvm:5.5.0")
+        |    runtime("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
+        |    runtime("com.squareup.okio:okio:3.18.1")
+        |    runtime("org.jetbrains:annotations:13.0")
+        |    runtime("com.squareup.okio:okio-jvm:3.18.1")
+        |  }
+        |}
+        |
+      """.trimMargin()
+    )
+  }
+}
