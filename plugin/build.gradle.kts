@@ -40,9 +40,9 @@ gradlePlugin {
       }
     }
   }
-  // TODO: set values
-//  website.set("https://github.com/username/reponame/")
-//  vcsUrl.set("https://github.com/username/reponame/")
+
+  website.set("https://github.com/autonomousapps/platform-builder-gradle-plugin/")
+  vcsUrl.set("https://github.com/autonomousapps/platform-builder-gradle-plugin/")
 }
 
 kotlin {
@@ -110,7 +110,7 @@ mavenPublishing {
     name = "Platform Builder Gradle Plugin"
     description = extra["desc"] as String
     inceptionYear = "2026"
-    url = "https://github.com/username/reponame"
+    url = "https://github.com/autonomousapps/platform-builder-gradle-plugin"
     licenses {
       license {
         name = "The Apache License, Version 2.0"
@@ -122,13 +122,13 @@ mavenPublishing {
       developer {
         id = "autonomousapps"
         name = "Tony Robalik"
-        url = "https://github.com/username"
+        url = "https://github.com/autonomousapps"
       }
     }
     scm {
-      url = "https://github.com/username/reponame"
-      connection = "scm:git:git://github.com/username/reponame.git"
-      developerConnection = "scm:git:ssh://github.com/username/reponame.git"
+      url = "https://github.com/autonomousapps/platform-builder-gradle-plugin"
+      connection = "scm:git:git://github.com/autonomousapps/platform-builder-gradle-plugin.git"
+      developerConnection = "scm:git:ssh://github.com/autonomousapps/platform-builder-gradle-plugin.git"
     }
   }
 }
