@@ -1,4 +1,4 @@
-Release procedure for Template Gradle Plugin
+Release procedure for Plugin Builder Gradle Plugin
 
 1. Update CHANGELOG.
 1. Update README if needed.

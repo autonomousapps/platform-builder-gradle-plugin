@@ -1,10 +1,10 @@
 # Platform Builder Gradle Plugin
 
-This is a _template_ repository. Clone it and update it to meet your needs.
+Inspired by this (at time of writing unmerged) 
+[PR](https://github.com/gradle/gradle/pull/38879/changes#diff-d52b99eb1ba6f8cde0dfabf4aac52674a52764fbf087187f11a2cdddc28f88b3) 
+to Gradle core.
 
-TODO:
-1. Look for "TODO" and fix.
-2. Look for "template" and update to real name (this includes packages, class names, and text throughout the repo).
+TODO: fill out.
 
 License
 --------
