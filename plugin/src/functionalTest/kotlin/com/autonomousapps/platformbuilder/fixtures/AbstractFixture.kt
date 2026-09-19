@@ -52,7 +52,7 @@ internal abstract class AbstractFixture : AbstractGradleProject() {
     val properties = listOf(
       GradleProperties.BUILD_CACHE,
       GradleProperties.CONFIGURATION_CACHE_STABLE,
-      GradleProperties.ISOLATED_PROJECTS,
+//      GradleProperties.ISOLATED_PROJECTS,
       GradleProperties.PARALLEL,
     )
 

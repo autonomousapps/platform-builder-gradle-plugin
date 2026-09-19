@@ -1,6 +1,6 @@
 // Copyright (c) 2026. Tony Robalik.
 // SPDX-License-Identifier: Apache-2.0
-package com.autonomousapps.platformbuilder.utils.extensions
+package com.autonomousapps.platformbuilder.internal.utils.extensions
 
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.ExtraPropertiesExtension
