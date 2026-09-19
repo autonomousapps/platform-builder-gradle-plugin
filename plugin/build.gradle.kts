@@ -166,7 +166,11 @@ dependencyAnalysis {
   issues {
     onAny {
       severity("fail")
-      exclude(libs.junit.params)
+      exclude(
+        libs.assertj,
+        libs.junit.api,
+        libs.junit.params
+      )
     }
   }
 }
