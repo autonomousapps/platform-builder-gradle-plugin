@@ -25,7 +25,7 @@ import org.gradle.api.attributes.Usage
 import org.gradle.api.attributes.java.TargetJvmEnvironment
 
 /*
- * These functions were borrowed and modified (to support Android from)
+ * These functions were borrowed and modified (to support Android) from
  * `org.gradle.api.plugins.jvm.internal.JvmPluginServices`.
  */
 
