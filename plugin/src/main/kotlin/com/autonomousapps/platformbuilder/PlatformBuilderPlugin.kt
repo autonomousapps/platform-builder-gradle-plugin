@@ -148,14 +148,15 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       c.dependencies.addAllLater(androidDependencies)
     }
 
-
+    // nb: difference from Gradle PR (it has no support for Android library dependencies)
     dependencyHandler.run {
       attributesSchema.run {
-        attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE).run {
-          compatibilityRules.add(AndroidJavaCompatibilityRule::class.java)
-        }
         attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE).run {
           compatibilityRules.add(AarJarCompatibilityRule::class.java)
+        }
+        // This one never seems to trigger, but also it feels right to define it.
+        attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE).run {
+          compatibilityRules.add(AndroidJavaCompatibilityRule::class.java)
         }
       }
     }

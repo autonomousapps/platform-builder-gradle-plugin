@@ -50,7 +50,7 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
     assertThat(output).contains("com.squareup.okio:okio -> 3.18.1")
     assertThat(output).contains("org.jetbrains.kotlinx:kotlinx-coroutines-core -> 1.11.0")
   }
-  
+
   @MethodSource("gradleVersions")
   @ParameterizedTest(name = "{0}")
   fun `can publish platform`(gradleVersion: GradleVersion) {
