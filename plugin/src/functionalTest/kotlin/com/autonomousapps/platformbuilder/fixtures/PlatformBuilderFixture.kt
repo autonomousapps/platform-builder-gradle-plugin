@@ -23,7 +23,10 @@ internal class PlatformBuilderFixture : AbstractFixture() {
           group = "com.example.platform"
           version = "0.1"
           dependencies(
+            // Java library (JAR)
             platformApi("com.squareup.okhttp3:okhttp:5.5.0"),
+            // Android library (AAR)
+            platformApi("androidx.viewpager2:viewpager2:1.1.0"),
             platformApi("androidx.compose:compose-bom:2026.08.00").onPlatform(),
             platformApi(":platform2").onPlatform(),
           )
@@ -79,6 +82,7 @@ internal class PlatformBuilderFixture : AbstractFixture() {
             implementation("com.squareup.okio:okio"),
             // androidx.compose:compose-bom
             implementation("androidx.compose.animation:animation"),
+            implementation("androidx.viewpager2:viewpager2"),
           )
         }
       }
@@ -164,10 +168,45 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |          }
     |        },
     |        {
+    |          "group": "androidx.viewpager2",
+    |          "module": "viewpager2",
+    |          "version": {
+    |            "requires": "1.1.0"
+    |          }
+    |        },
+    |        {
     |          "group": "com.squareup.okhttp3",
     |          "module": "okhttp-jvm",
     |          "version": {
     |            "requires": "5.5.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.annotation",
+    |          "module": "annotation",
+    |          "version": {
+    |            "requires": "1.2.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.annotation",
+    |          "module": "annotation-experimental",
+    |          "version": {
+    |            "requires": "1.4.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.fragment",
+    |          "module": "fragment",
+    |          "version": {
+    |            "requires": "1.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.recyclerview",
+    |          "module": "recyclerview",
+    |          "version": {
+    |            "requires": "1.3.1"
     |          }
     |        },
     |        {
@@ -185,6 +224,55 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |          }
     |        },
     |        {
+    |          "group": "androidx.core",
+    |          "module": "core",
+    |          "version": {
+    |            "requires": "1.7.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.collection",
+    |          "module": "collection",
+    |          "version": {
+    |            "requires": "1.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.viewpager",
+    |          "module": "viewpager",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.loader",
+    |          "module": "loader",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.activity",
+    |          "module": "activity",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-viewmodel",
+    |          "version": {
+    |            "requires": "2.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.customview",
+    |          "module": "customview",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
     |          "group": "org.jetbrains",
     |          "module": "annotations",
     |          "version": {
@@ -196,6 +284,69 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |          "module": "okio-jvm",
     |          "version": {
     |            "requires": "3.18.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-runtime",
+    |          "version": {
+    |            "requires": "2.3.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.versionedparcelable",
+    |          "module": "versionedparcelable",
+    |          "version": {
+    |            "requires": "1.1.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-livedata",
+    |          "version": {
+    |            "requires": "2.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.savedstate",
+    |          "module": "savedstate",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-common",
+    |          "version": {
+    |            "requires": "2.3.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.arch.core",
+    |          "module": "core-common",
+    |          "version": {
+    |            "requires": "2.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.arch.core",
+    |          "module": "core-runtime",
+    |          "version": {
+    |            "requires": "2.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-livedata-core",
+    |          "version": {
+    |            "requires": "2.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "com.squareup.okhttp3",
+    |          "module": "okhttp-android",
+    |          "version": {
+    |            "requires": "5.5.0"
     |          }
     |        }
     |      ]
@@ -250,10 +401,59 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |          }
     |        },
     |        {
+    |          "group": "androidx.viewpager2",
+    |          "module": "viewpager2",
+    |          "version": {
+    |            "requires": "1.1.0"
+    |          }
+    |        },
+    |        {
     |          "group": "com.squareup.okhttp3",
     |          "module": "okhttp-jvm",
     |          "version": {
     |            "requires": "5.5.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.annotation",
+    |          "module": "annotation",
+    |          "version": {
+    |            "requires": "1.2.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.annotation",
+    |          "module": "annotation-experimental",
+    |          "version": {
+    |            "requires": "1.4.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.collection",
+    |          "module": "collection",
+    |          "version": {
+    |            "requires": "1.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.core",
+    |          "module": "core",
+    |          "version": {
+    |            "requires": "1.7.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.fragment",
+    |          "module": "fragment",
+    |          "version": {
+    |            "requires": "1.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.recyclerview",
+    |          "module": "recyclerview",
+    |          "version": {
+    |            "requires": "1.3.1"
     |          }
     |        },
     |        {
@@ -271,6 +471,55 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |          }
     |        },
     |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-runtime",
+    |          "version": {
+    |            "requires": "2.3.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.versionedparcelable",
+    |          "module": "versionedparcelable",
+    |          "version": {
+    |            "requires": "1.1.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.viewpager",
+    |          "module": "viewpager",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.loader",
+    |          "module": "loader",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.activity",
+    |          "module": "activity",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-viewmodel",
+    |          "version": {
+    |            "requires": "2.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.customview",
+    |          "module": "customview",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
     |          "group": "org.jetbrains",
     |          "module": "annotations",
     |          "version": {
@@ -282,6 +531,97 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |          "module": "okio-jvm",
     |          "version": {
     |            "requires": "3.18.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.arch.core",
+    |          "module": "core-runtime",
+    |          "version": {
+    |            "requires": "2.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-common",
+    |          "version": {
+    |            "requires": "2.3.1"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.arch.core",
+    |          "module": "core-common",
+    |          "version": {
+    |            "requires": "2.1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-livedata",
+    |          "version": {
+    |            "requires": "2.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.savedstate",
+    |          "module": "savedstate",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.lifecycle",
+    |          "module": "lifecycle-livedata-core",
+    |          "version": {
+    |            "requires": "2.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.concurrent",
+    |          "module": "concurrent-futures",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.customview",
+    |          "module": "customview-poolingcontainer",
+    |          "version": {
+    |            "requires": "1.0.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "com.google.guava",
+    |          "module": "listenablefuture",
+    |          "version": {
+    |            "requires": "1.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.core",
+    |          "module": "core-ktx",
+    |          "version": {
+    |            "requires": "1.5.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "com.squareup.okhttp3",
+    |          "module": "okhttp-android",
+    |          "version": {
+    |            "requires": "5.5.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.startup",
+    |          "module": "startup-runtime",
+    |          "version": {
+    |            "requires": "1.2.0"
+    |          }
+    |        },
+    |        {
+    |          "group": "androidx.tracing",
+    |          "module": "tracing",
+    |          "version": {
+    |            "requires": "1.0.0"
     |          }
     |        }
     |      ]

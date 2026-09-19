@@ -28,6 +28,7 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
     assertThat(output).contains("com.squareup.okhttp3:okhttp -> 5.5.0")
     assertThat(output).contains("com.squareup.okio:okio -> 3.18.1")
     assertThat(output).contains("androidx.compose.animation:animation -> 1.12.0")
+    assertThat(output).contains("androidx.viewpager2:viewpager2:1.1.0-beta02 -> 1.1.0 (c)")
 
     // When (Java)
     dependencies = ":${PlatformBuilderFixture.LIB_JAVA_NAME}:dependencies"

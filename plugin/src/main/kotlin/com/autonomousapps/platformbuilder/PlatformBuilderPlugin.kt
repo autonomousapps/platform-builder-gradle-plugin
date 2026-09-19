@@ -16,7 +16,13 @@
 package com.autonomousapps.platformbuilder
 
 import com.autonomousapps.platformbuilder.PlatformBuilderPlugin.ComponentAndVariant.Kind
-import com.autonomousapps.platformbuilder.utils.attributes.isJavaPlatform
+import com.autonomousapps.platformbuilder.internal.utils.attributes.AarJarCompatibilityRule
+import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidJavaCompatibilityRule
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsAndroidCompileClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsAndroidRuntimeClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsCompileClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsRuntimeClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatform
 import org.gradle.api.GradleException
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Plugin
@@ -34,11 +40,8 @@ import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.ResolvedVariantResult
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult
-import org.gradle.api.attributes.Bundling
-import org.gradle.api.attributes.Category
-import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.attributes.LibraryElements
-import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.provider.Provider
@@ -77,70 +80,86 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       c.description = "The declared dependencies to resolve the platform API graph from."
     }
     val apiClasspath = configurations.resolvable("platformApiClasspath") { c ->
-      c.description = "The classpath that resolves the API graph for the platform."
+      c.description = "The classpath that resolves the Java variant of the API graph for the platform."
       c.extendsFrom(platformApi)
       // nb: difference from Gradle PR (it uses JvmPluginServices)
       configureAsCompileClasspath(c)
+    }
+    // nb: difference from Gradle PR (no support for Android variants)
+    val androidApiClasspath = configurations.resolvable("platformAndroidApiClasspath") { c ->
+      c.description = "The classpath that resolves the Android variant of the API graph for the platform."
+      c.extendsFrom(platformApi)
+      // nb: difference from Gradle PR (it uses JvmPluginServices)
+      configureAsAndroidCompileClasspath(c)
     }
 
     val platformRuntime = configurations.dependencyScope("platformRuntime") { c ->
       c.description = "The additional declared dependencies to resolve the platform runtime graph from."
     }
     val runtimeClasspath = configurations.resolvable("platformRuntimeClasspath") { c ->
-      c.description = "The classpath that resolves the runtime graph for the platform."
+      c.description = "The classpath that resolves the Java variant of the runtime graph for the platform."
       c.extendsFrom(platformApi, platformRuntime)
       c.shouldResolveConsistentlyWith(apiClasspath.get())
       // nb: difference from Gradle PR (it uses JvmPluginServices)
       configureAsRuntimeClasspath(c)
     }
+    // nb: difference from Gradle PR (no support for Android variants)
+    val androidRuntimeClasspath = configurations.resolvable("platformAndroidRuntimeClasspath") { c ->
+      c.description = "The classpath that resolves the Android variant of the runtime graph for the platform."
+      c.extendsFrom(platformApi, platformRuntime)
+      c.shouldResolveConsistentlyWith(androidApiClasspath.get())
+      // nb: difference from Gradle PR (it uses JvmPluginServices)
+      configureAsAndroidRuntimeClasspath(c)
+    }
 
     // Resolve the platform graphs and add them as dependency constraints to the platform variants.
     configurations.named(JavaPlatformPlugin.API_CONFIGURATION_NAME).configure { c ->
-      val dependenciesProvider = getDependencies(apiClasspath)
-      val constraints = dependenciesProvider.map { it.constraints }
-      val dependencies = dependenciesProvider.map { it.dependencies }
+      val javaDependenciesResult = getDependencies(apiClasspath)
+      val javaConstraints = javaDependenciesResult.map(GetDependenciesResult::constraints)
+      val javaDependencies = javaDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      c.dependencyConstraints.addAllLater(constraints)
+      val androidDependenciesResult = getDependencies(androidApiClasspath)
+      val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
+      val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
+
+      c.dependencyConstraints.addAllLater(javaConstraints)
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-      c.dependencies.addAllLater(dependencies)
+      c.dependencies.addAllLater(javaDependencies)
+
+      // nb: difference from Gradle PR (it has no support for Android library dependencies)
+      c.dependencyConstraints.addAllLater(androidConstraints)
+      c.dependencies.addAllLater(androidDependencies)
     }
     configurations.named(JavaPlatformPlugin.RUNTIME_CONFIGURATION_NAME).configure { c ->
-      val dependenciesProvider = getDependencies(runtimeClasspath)
-      val constraints = dependenciesProvider.map { it.constraints }
-      val dependencies = dependenciesProvider.map { it.dependencies }
+      val javaDependenciesResult = getDependencies(runtimeClasspath)
+      val javaConstraints = javaDependenciesResult.map(GetDependenciesResult::constraints)
+      val javaDependencies = javaDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      c.dependencyConstraints.addAllLater(constraints)
+      val androidDependenciesResult = getDependencies(androidRuntimeClasspath)
+      val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
+      val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
+
+      c.dependencyConstraints.addAllLater(javaConstraints)
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-      c.dependencies.addAllLater(dependencies)
+      c.dependencies.addAllLater(javaDependencies)
+
+      // nb: difference from Gradle PR (it has no support for Android library dependencies)
+      c.dependencyConstraints.addAllLater(androidConstraints)
+      c.dependencies.addAllLater(androidDependencies)
     }
-  }
 
-  /** Public API version of `jvmPluginServices.configureAsCompileClasspath(conf)`. */
-  private fun configureAsCompileClasspath(configuration: HasConfigurableAttributes<*>) {
-    //this.configureAttributes(configuration, (details) -> details.library().apiUsage().withExternalDependencies().preferStandardJVM());
-    configureAttributes(configuration)
-
-    val attributes = configuration.attributes
-    attributes.attribute(Usage.USAGE_ATTRIBUTE, attributes.named(Usage::class.java, Usage.JAVA_API))
-  }
-
-  /** Public API version of `jvmPluginServices.configureAsRuntimeClasspath(conf)`. */
-  private fun configureAsRuntimeClasspath(configuration: HasConfigurableAttributes<*>) {
-    //this.configureAttributes(configuration, (details) -> details.library().runtimeUsage().asJar().withExternalDependencies().preferStandardJVM());
-    configureAttributes(configuration)
-
-    val attributes = configuration.attributes
-    attributes.attribute(Usage.USAGE_ATTRIBUTE, attributes.named(Usage::class.java, Usage.JAVA_RUNTIME))
-  }
-
-  private fun configureAttributes(configuration: HasConfigurableAttributes<*>) {
-    val attributes = configuration.attributes
-    attributes.attribute(Category.CATEGORY_ATTRIBUTE, attributes.named(Category::class.java, Category.LIBRARY))
-    attributes.attribute(
-      LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
-      attributes.named(LibraryElements::class.java, LibraryElements.JAR)
-    )
-    attributes.attribute(Bundling.BUNDLING_ATTRIBUTE, attributes.named(Bundling::class.java, Bundling.EXTERNAL))
+    // nb: difference from Gradle PR (it has no support for Android library dependencies)
+    dependencyHandler.run {
+      attributesSchema.run {
+        attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE).run {
+          compatibilityRules.add(AarJarCompatibilityRule::class.java)
+        }
+        // This one never seems to trigger, but also it feels right to define it.
+        attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE).run {
+          compatibilityRules.add(AndroidJavaCompatibilityRule::class.java)
+        }
+      }
+    }
   }
 
   /**
