@@ -65,6 +65,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
   override fun apply(target: Project): Unit = target.run {
     pluginManager.apply("java-platform")
 
+    // nb: difference from Gradle PR (it doesn't have an extension)
     PlatformBuilderExtension.create(this)
 
     // nb: difference from Gradle PR (it doesn't automatically set allowDependencies())
@@ -100,6 +101,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val dependencies = dependenciesProvider.map { it.dependencies }
 
       c.dependencyConstraints.addAllLater(constraints)
+      // nb: difference from Gradle PR (it has no support for direct platform dependencies)
       c.dependencies.addAllLater(dependencies)
     }
     configurations.named(JavaPlatformPlugin.RUNTIME_CONFIGURATION_NAME).configure { c ->
@@ -108,6 +110,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val dependencies = dependenciesProvider.map { it.dependencies }
 
       c.dependencyConstraints.addAllLater(constraints)
+      // nb: difference from Gradle PR (it has no support for direct platform dependencies)
       c.dependencies.addAllLater(dependencies)
     }
   }
@@ -141,8 +144,9 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
   }
 
   /**
-   * Given a configuration, for each component in its resolved graph, return a dependency
-   * constraint for that component.
+   * Given a configuration, for each component in its resolved graph, return a dependency constraint for that component.
+   *
+   * nb: difference from Gradle PR (it has no support for direct platform dependencies).
    */
   private fun Project.getDependencies(graphConfiguration: NamedDomainObjectProvider<ResolvableConfiguration>): Provider<GetDependenciesResult> {
     return graphConfiguration
@@ -208,11 +212,13 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     }
   }
 
+  // nb: difference from Gradle PR (it has no support for direct platform dependencies)
   private class GetDependenciesResult(
     val constraints: Collection<DependencyConstraint>,
     val dependencies: Collection<Dependency>,
   )
 
+  // nb: difference from Gradle PR (it has no support for direct platform dependencies)
   private class GetComponentIdsResult(
     val regularComponents: Set<ComponentIdentifier>,
     val platformComponents: Set<ComponentIdentifier>,
@@ -222,6 +228,8 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     /**
      * Walks a dependency graph BFS from the root, returning the IDs of all components present, in the order they were
      * encountered.
+     *
+     * nb: difference from Gradle PR (it has no support for direct platform dependencies).
      */
     fun getComponentIds(root: ComponentAndVariant): GetComponentIdsResult {
       val seenComponents = linkedSetOf<ComponentIdentifier>()
@@ -243,6 +251,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
           seenPlatformComponents.add(next.component.id)
         }
 
+        // nb: difference from Gradle PR (it has no support for direct platform dependencies)
         if (next.kind == Kind.PLATFORM) {
           // Don't add platforms' dependencies. They provide those themselves.
           continue
@@ -254,6 +263,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
             val variant = dependency.resolvedVariant
 
             if (seenVariants.add(variant)) {
+              // nb: difference from Gradle PR (it has no support for direct platform dependencies)
               val kind = if (dependency.isJavaPlatform()) Kind.PLATFORM else Kind.REGULAR
               queue.add(ComponentAndVariant(component, variant, kind))
             }
