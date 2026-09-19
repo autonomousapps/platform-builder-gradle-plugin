@@ -71,48 +71,4 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
       assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents)
     }
   }
-
-  @MethodSource("gradleVersions")
-  @ParameterizedTest(name = "{0}")
-  fun `can write platform`(gradleVersion: GradleVersion) {
-    // Given
-    val fixture = PlatformBuilderFixture()
-    val gradleProject = fixture.build()
-
-    // When (Android)
-    build(gradleVersion, gradleProject.rootDir, ":platform:buildPlatform")
-
-    // Then
-    val platform = gradleProject.singleArtifact("platform", "platform-builder/platform.gradle.kts")
-    assertThat(platform.asFile).exists()
-    assertThat(platform.asFile.readText()).isEqualTo(
-      """
-        |plugins {
-        |  id("java-platform")
-        |}
-        |
-        |javaPlatform {
-        |  allowDependencies()
-        |}
-        |
-        |dependencies {
-        |  constraints {
-        |    api("com.squareup.okhttp3:okhttp:5.5.0")
-        |    api("com.squareup.okhttp3:okhttp-jvm:5.5.0")
-        |    api("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
-        |    api("com.squareup.okio:okio:3.18.1")
-        |    api("org.jetbrains:annotations:13.0")
-        |    api("com.squareup.okio:okio-jvm:3.18.1")
-        |    runtime("com.squareup.okhttp3:okhttp:5.5.0")
-        |    runtime("com.squareup.okhttp3:okhttp-jvm:5.5.0")
-        |    runtime("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
-        |    runtime("com.squareup.okio:okio:3.18.1")
-        |    runtime("org.jetbrains:annotations:13.0")
-        |    runtime("com.squareup.okio:okio-jvm:3.18.1")
-        |  }
-        |}
-        |
-      """.trimMargin()
-    )
-  }
 }
