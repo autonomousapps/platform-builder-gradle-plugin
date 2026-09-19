@@ -18,6 +18,10 @@ package com.autonomousapps.platformbuilder
 import com.autonomousapps.platformbuilder.PlatformBuilderPlugin.ComponentAndVariant.Kind
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AarJarCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidJavaCompatibilityRule
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsAndroidCompileClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsAndroidRuntimeClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsCompileClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsRuntimeClasspath
 import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatform
 import org.gradle.api.GradleException
 import org.gradle.api.NamedDomainObjectProvider
@@ -36,11 +40,7 @@ import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.ResolvedVariantResult
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult
-import org.gradle.api.attributes.Bundling
-import org.gradle.api.attributes.Category
-import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.attributes.LibraryElements
-import org.gradle.api.attributes.Usage
 import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
@@ -159,48 +159,6 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
           compatibilityRules.add(AndroidJavaCompatibilityRule::class.java)
         }
       }
-    }
-  }
-
-  private fun configureAsAndroidCompileClasspath(configuration: HasConfigurableAttributes<*>) {
-    with(configuration.attributes) {
-      attributes.attribute(Category.CATEGORY_ATTRIBUTE, attributes.named(Category::class.java, Category.LIBRARY))
-      attributes.attribute(Usage.USAGE_ATTRIBUTE, attributes.named(Usage::class.java, Usage.JAVA_API))
-      attributes.attribute(Bundling.BUNDLING_ATTRIBUTE, attributes.named(Bundling::class.java, Bundling.EXTERNAL))
-      attributes.attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, attributes.named(TargetJvmEnvironment::class.java, TargetJvmEnvironment.ANDROID))
-    }
-  }
-
-  private fun configureAsAndroidRuntimeClasspath(configuration: HasConfigurableAttributes<*>) {
-    with(configuration.attributes) {
-      attributes.attribute(Category.CATEGORY_ATTRIBUTE, attributes.named(Category::class.java, Category.LIBRARY))
-      attributes.attribute(Usage.USAGE_ATTRIBUTE, attributes.named(Usage::class.java, Usage.JAVA_RUNTIME))
-      attributes.attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, attributes.named(LibraryElements::class.java, "aar"))
-      attributes.attribute(Bundling.BUNDLING_ATTRIBUTE, attributes.named(Bundling::class.java, Bundling.EXTERNAL))
-      attributes.attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, attributes.named(TargetJvmEnvironment::class.java, TargetJvmEnvironment.ANDROID))
-    }
-  }
-
-  /** Public API version of `jvmPluginServices.configureAsCompileClasspath(conf)`. */
-  private fun configureAsCompileClasspath(configuration: HasConfigurableAttributes<*>) {
-    //this.configureAttributes(configuration, (details) -> details.library().apiUsage().withExternalDependencies().preferStandardJVM());
-    with(configuration.attributes) {
-      attributes.attribute(Category.CATEGORY_ATTRIBUTE, attributes.named(Category::class.java, Category.LIBRARY))
-      attributes.attribute(Usage.USAGE_ATTRIBUTE, attributes.named(Usage::class.java, Usage.JAVA_API))
-      attributes.attribute(Bundling.BUNDLING_ATTRIBUTE, attributes.named(Bundling::class.java, Bundling.EXTERNAL))
-      attributes.attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, attributes.named(TargetJvmEnvironment::class.java, TargetJvmEnvironment.STANDARD_JVM))
-    }
-  }
-
-  /** Public API version of `jvmPluginServices.configureAsRuntimeClasspath(conf)`. */
-  private fun configureAsRuntimeClasspath(configuration: HasConfigurableAttributes<*>) {
-    //this.configureAttributes(configuration, (details) -> details.library().runtimeUsage().asJar().withExternalDependencies().preferStandardJVM());
-    with(configuration.attributes) {
-      attributes.attribute(Category.CATEGORY_ATTRIBUTE, attributes.named(Category::class.java, Category.LIBRARY))
-      attributes.attribute(Usage.USAGE_ATTRIBUTE, attributes.named(Usage::class.java, Usage.JAVA_RUNTIME))
-      attributes.attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, attributes.named(LibraryElements::class.java, LibraryElements.JAR))
-      attributes.attribute(Bundling.BUNDLING_ATTRIBUTE, attributes.named(Bundling::class.java, Bundling.EXTERNAL))
-      attributes.attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, attributes.named(TargetJvmEnvironment::class.java, TargetJvmEnvironment.STANDARD_JVM))
     }
   }
 
