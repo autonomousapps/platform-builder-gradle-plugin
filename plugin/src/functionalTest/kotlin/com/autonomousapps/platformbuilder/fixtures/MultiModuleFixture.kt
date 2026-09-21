@@ -6,8 +6,11 @@ import com.autonomousapps.kit.GradleProject
 import com.autonomousapps.kit.gradle.Dependency.Companion.api
 import com.autonomousapps.kit.gradle.Dependency.Companion.implementation
 import com.autonomousapps.kit.gradle.android.AndroidBlock
+import org.gradle.util.GradleVersion
 
-internal class PlatformBuilderFixture : AbstractFixture() {
+internal class MultiModuleFixture(
+  gradleVersion: GradleVersion,
+) : AbstractFixture(gradleVersion) {
 
   internal companion object {
     const val LIB_ANDROID_NAME = "libandroid"
@@ -23,12 +26,13 @@ internal class PlatformBuilderFixture : AbstractFixture() {
           group = "com.example.platform"
           version = "0.1"
           dependencies(
+            // Other platforms
+            platformApi("androidx.compose:compose-bom:2026.08.00").onPlatform(),
+            platformApi(":platform2").onPlatform(),
             // Java library (JAR)
             platformApi("com.squareup.okhttp3:okhttp:5.5.0"),
             // Android library (AAR)
             platformApi("androidx.viewpager2:viewpager2:1.1.0"),
-            platformApi("androidx.compose:compose-bom:2026.08.00").onPlatform(),
-            platformApi(":platform2").onPlatform(),
           )
           withGroovy(
             """
@@ -125,7 +129,7 @@ internal class PlatformBuilderFixture : AbstractFixture() {
     |  },
     |  "createdBy": {
     |    "gradle": {
-    |      "version": "9.7.1"
+    |      "version": "${gradleVersion.version}"
     |    }
     |  },
     |  "variants": [

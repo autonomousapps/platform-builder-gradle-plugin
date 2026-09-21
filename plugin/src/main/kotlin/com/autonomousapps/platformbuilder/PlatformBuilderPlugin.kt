@@ -18,11 +18,10 @@ package com.autonomousapps.platformbuilder
 import com.autonomousapps.platformbuilder.PlatformBuilderPlugin.ComponentAndVariant.Kind
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AarJarCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidJavaCompatibilityRule
-import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsAndroidCompileClasspath
-import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsAndroidRuntimeClasspath
-import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsCompileClasspath
-import com.autonomousapps.platformbuilder.internal.utils.attributes.configureAsRuntimeClasspath
+import com.autonomousapps.platformbuilder.internal.utils.attributes.JvmPluginServices
 import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatform
+import com.autonomousapps.platformbuilder.internal.utils.configurations.ConfigurationServices
+import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
 import org.gradle.api.GradleException
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Plugin
@@ -45,6 +44,7 @@ import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import java.util.Collections
 import java.util.stream.Collectors
 import javax.inject.Inject
@@ -71,6 +71,9 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     // nb: difference from Gradle PR (it doesn't have an extension)
     PlatformBuilderExtension.create(this)
 
+    val configurationServices = ConfigurationServices()
+    val jvmPluginServices = JvmPluginServices(objects)
+
     // nb: difference from Gradle PR (it doesn't automatically set allowDependencies())
     extensions.configure(JavaPlatformExtension::class.java) {
       it.allowDependencies()
@@ -81,16 +84,16 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     }
     val apiClasspath = configurations.resolvable("platformApiClasspath") { c ->
       c.description = "The classpath that resolves the Java variant of the API graph for the platform."
-      c.extendsFrom(platformApi)
+      configurationServices.extendsFrom(c, platformApi)
       // nb: difference from Gradle PR (it uses JvmPluginServices)
-      configureAsCompileClasspath(c)
+      jvmPluginServices.configureAsCompileClasspath(c)
     }
     // nb: difference from Gradle PR (no support for Android variants)
     val androidApiClasspath = configurations.resolvable("platformAndroidApiClasspath") { c ->
       c.description = "The classpath that resolves the Android variant of the API graph for the platform."
-      c.extendsFrom(platformApi)
+      configurationServices.extendsFrom(c, platformApi)
       // nb: difference from Gradle PR (it uses JvmPluginServices)
-      configureAsAndroidCompileClasspath(c)
+      jvmPluginServices.configureAsAndroidCompileClasspath(c)
     }
 
     val platformRuntime = configurations.dependencyScope("platformRuntime") { c ->
@@ -98,18 +101,18 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     }
     val runtimeClasspath = configurations.resolvable("platformRuntimeClasspath") { c ->
       c.description = "The classpath that resolves the Java variant of the runtime graph for the platform."
-      c.extendsFrom(platformApi, platformRuntime)
+      configurationServices.extendsFrom(c, platformApi, platformRuntime)
       c.shouldResolveConsistentlyWith(apiClasspath.get())
       // nb: difference from Gradle PR (it uses JvmPluginServices)
-      configureAsRuntimeClasspath(c)
+      jvmPluginServices.configureAsRuntimeClasspath(c)
     }
     // nb: difference from Gradle PR (no support for Android variants)
     val androidRuntimeClasspath = configurations.resolvable("platformAndroidRuntimeClasspath") { c ->
       c.description = "The classpath that resolves the Android variant of the runtime graph for the platform."
-      c.extendsFrom(platformApi, platformRuntime)
+      configurationServices.extendsFrom(c, platformApi, platformRuntime)
       c.shouldResolveConsistentlyWith(androidApiClasspath.get())
       // nb: difference from Gradle PR (it uses JvmPluginServices)
-      configureAsAndroidRuntimeClasspath(c)
+      jvmPluginServices.configureAsAndroidRuntimeClasspath(c)
     }
 
     // Resolve the platform graphs and add them as dependency constraints to the platform variants.
@@ -148,7 +151,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       c.dependencies.addAllLater(androidDependencies)
     }
 
-    // nb: difference from Gradle PR (it has no support for Android library dependencies)
+    // nb: difference from Gradle PR (it has no support for Android library dependencies or Kotlin platform type)
     dependencyHandler.run {
       attributesSchema.run {
         attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE).run {
@@ -158,7 +161,22 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
         attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE).run {
           compatibilityRules.add(AndroidJavaCompatibilityRule::class.java)
         }
+
+        // Requires org.jetbrains.kotlin:kotlin-gradle-plugin-api on the classpath
+        if (isKgpAvailable()) {
+          KotlinPlatformType.setupAttributesMatchingStrategy(this)
+        }
       }
+    }
+  }
+
+  // nb: difference from Gradle PR (it has no support for Kotlin platform type)
+  private fun isKgpAvailable(): Boolean {
+    return try {
+      Class.forName("org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType", false, javaClass.classLoader)
+      true
+    } catch (_: ClassNotFoundException) {
+      false
     }
   }
 
@@ -188,7 +206,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
             }
 
             is ProjectComponentIdentifier -> {
-              dependencyConstraintFactory.create(dependencyFactory.createProjectDependency(componentId.projectPath))
+              dependencyConstraintFactory.create(newProjectDependency(componentId.projectPath))
             }
 
             else -> {
@@ -204,7 +222,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
             }
 
             is ProjectComponentIdentifier -> {
-              dependencyHandler.platform(dependencyFactory.createProjectDependency(componentId.projectPath))
+              dependencyHandler.platform(newProjectDependency(componentId.projectPath))
             }
 
             else -> {

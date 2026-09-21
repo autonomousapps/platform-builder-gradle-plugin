@@ -3,7 +3,8 @@
 package com.autonomousapps.platformbuilder
 
 import com.autonomousapps.kit.GradleBuilder.build
-import com.autonomousapps.platformbuilder.fixtures.PlatformBuilderFixture
+import com.autonomousapps.platformbuilder.fixtures.KmpFixture
+import com.autonomousapps.platformbuilder.fixtures.MultiModuleFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.util.GradleVersion
 import org.junit.jupiter.params.ParameterizedTest
@@ -12,15 +13,15 @@ import kotlin.io.path.readText
 
 internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
 
-  @MethodSource("gradleVersions")
+  @MethodSource("gradleVersionsForAndroid")
   @ParameterizedTest(name = "{0}")
   fun `consuming project gets versions from the graph resolved by the platform`(gradleVersion: GradleVersion) {
     // Given
-    val fixture = PlatformBuilderFixture()
+    val fixture = MultiModuleFixture(gradleVersion)
     val gradleProject = fixture.build()
 
     // When (Android)
-    var dependencies = ":${PlatformBuilderFixture.LIB_ANDROID_NAME}:dependencies"
+    var dependencies = ":${MultiModuleFixture.LIB_ANDROID_NAME}:dependencies"
     var result = build(gradleVersion, gradleProject.rootDir, dependencies, "--configuration", "debugRuntimeClasspath")
 
     // Then
@@ -31,7 +32,7 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
     assertThat(output).contains("androidx.viewpager2:viewpager2:1.1.0-beta02 -> 1.1.0 (c)")
 
     // When (Java)
-    dependencies = ":${PlatformBuilderFixture.LIB_JAVA_NAME}:dependencies"
+    dependencies = ":${MultiModuleFixture.LIB_JAVA_NAME}:dependencies"
     result = build(gradleVersion, gradleProject.rootDir, dependencies, "--configuration", "runtimeClasspath")
 
     // Then
@@ -41,7 +42,7 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
     assertThat(output).contains("org.apache.commons:commons-collections4 -> 4.6.0")
 
     // When (Kotlin)
-    dependencies = ":${PlatformBuilderFixture.LIB_KOTLIN_NAME}:dependencies"
+    dependencies = ":${MultiModuleFixture.LIB_KOTLIN_NAME}:dependencies"
     result = build(gradleVersion, gradleProject.rootDir, dependencies, "--configuration", "runtimeClasspath")
 
     // Then
@@ -51,14 +52,14 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
     assertThat(output).contains("org.jetbrains.kotlinx:kotlinx-coroutines-core -> 1.11.0")
   }
 
-  @MethodSource("gradleVersions")
+  @MethodSource("gradleVersionsForAndroid")
   @ParameterizedTest(name = "{0}")
   fun `can publish platform`(gradleVersion: GradleVersion) {
     // Given
-    val fixture = PlatformBuilderFixture()
+    val fixture = MultiModuleFixture(gradleVersion)
     val gradleProject = fixture.build()
 
-    // When (Android)
+    // When
     build(gradleVersion, gradleProject.rootDir, ":platform:publishPlatformPublicationToTestRepository")
 
     // Then
@@ -71,5 +72,38 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
       assertThat(module).exists().isRegularFile()
       assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents)
     }
+  }
+
+  @MethodSource("gradleVersions")
+  @ParameterizedTest(name = "{0}")
+  fun `can publish platform with KMP constraints`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = KmpFixture(gradleVersion)
+    val gradleProject = fixture.build()
+
+    // When
+    build(gradleVersion, gradleProject.rootDir, ":platform:publishPlatformPublicationToTestRepository")
+
+    // Then
+    val repo = gradleProject.singleArtifact("platform", "repo/com/example/platform/platform/0.1")
+    with(repo.asPath) {
+      assertThat(this).exists().isDirectory()
+      assertThat(resolve("platform-0.1.pom")).exists().isRegularFile()
+
+      val module = resolve("platform-0.1.module")
+      assertThat(module).exists().isRegularFile()
+      assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents)
+    }
+  }
+
+  @MethodSource("gradleVersions")
+  @ParameterizedTest(name = "{0}")
+  fun `build succeeds when KGP not present`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = KmpFixture(gradleVersion, hasKotlin = false)
+    val gradleProject = fixture.build()
+
+    // When
+    build(gradleVersion, gradleProject.rootDir, ":platform:publishPlatformPublicationToTestRepository")
   }
 }

@@ -7,8 +7,11 @@ import com.autonomousapps.kit.GradleProject
 import com.autonomousapps.kit.gradle.Dependency
 import com.autonomousapps.kit.gradle.GradleProperties
 import com.autonomousapps.kit.gradle.Plugin
+import org.gradle.util.GradleVersion
 
-internal abstract class AbstractFixture : AbstractGradleProject() {
+internal abstract class AbstractFixture(
+  protected val gradleVersion: GradleVersion,
+) : AbstractGradleProject() {
 
   companion object {
     const val AGP_VERSION = "9.0.1"
@@ -22,7 +25,7 @@ internal abstract class AbstractFixture : AbstractGradleProject() {
      */
     private val AGP = Plugin("com.android.application", AGP_VERSION, apply = false)
     private val KGP = Plugin("org.jetbrains.kotlin.jvm", KGP_VERSION, apply = false)
-    private val PLATFORM_BUILDER = Plugin(PLATFORM_BUILDER_ID, PLUGIN_UNDER_TEST_VERSION, apply = false)
+    internal val PLATFORM_BUILDER = Plugin(PLATFORM_BUILDER_ID, PLUGIN_UNDER_TEST_VERSION, apply = false)
 
 
     val ANDROID_APP = Plugin("com.android.application")

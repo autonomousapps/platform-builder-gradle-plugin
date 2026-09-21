@@ -84,6 +84,9 @@ dependencies {
   compileOnly(libs.agp.api) {
     because("Consumers should break if they don't manage their classpaths correctly.")
   }
+  compileOnly(libs.kotlin.gradle.api) {
+    because("Consumers should break if they don't manage their classpaths correctly.")
+  }
 
   testImplementation(platform(libs.junit.bom))
   testImplementation(libs.assertj)
