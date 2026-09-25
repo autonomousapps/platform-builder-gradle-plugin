@@ -594,13 +594,6 @@ internal class MultiModuleFixture(
     |          }
     |        },
     |        {
-    |          "group": "com.google.guava",
-    |          "module": "listenablefuture",
-    |          "version": {
-    |            "requires": "1.0"
-    |          }
-    |        },
-    |        {
     |          "group": "androidx.core",
     |          "module": "core-ktx",
     |          "version": {

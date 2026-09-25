@@ -57,6 +57,13 @@ import kotlin.collections.ArrayDeque
  * resolution occurs when building the platform, so any version conflicts encountered will be resolved, with the results
  * included in the platform.
  *
+ * *build.gradle.kts*
+ * ```
+ * plugins {
+ *   id("com.autonomousapps.platform-builder")
+ * }
+ * ```
+ *
  * @see <a href="https://github.com/gradle/gradle/pull/38879/changes#diff-e6c25176a72258f0ddf524b667ff6e5ef807bbbfef115dd469baab7fc3435fac>Create JavaPlatformBuilderPlugin</a>
  */
 @Suppress("UnstableApiUsage")
@@ -199,43 +206,64 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
         //  interpret a platform as all strict versions.
         val result = getComponentIds(root)
 
-        val constraints = result.regularComponents.stream().map { componentId ->
-          when (componentId) {
-            is ModuleComponentIdentifier -> {
-              dependencyConstraintFactory.create("${componentId.group}:${componentId.module}:${componentId.version}")
-            }
+        val constraints = result.regularComponents.stream()
+          .filter(excludeGuava)
+          .map { componentId ->
+            when (componentId) {
+              is ModuleComponentIdentifier -> {
+                dependencyConstraintFactory.create("${componentId.group}:${componentId.module}:${componentId.version}")
+              }
 
-            is ProjectComponentIdentifier -> {
-              dependencyConstraintFactory.create(newProjectDependency(componentId.projectPath))
-            }
+              is ProjectComponentIdentifier -> {
+                dependencyConstraintFactory.create(newProjectDependency(componentId.projectPath))
+              }
 
-            else -> {
-              throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
+              else -> {
+                throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
+              }
             }
-          }
-        }.collect(Collectors.toList())
+          }.collect(Collectors.toList())
 
-        val dependencies = result.platformComponents.stream().map { componentId ->
-          when (componentId) {
-            is ModuleComponentIdentifier -> {
-              dependencyHandler.platform(dependencyFactory.create("${componentId.group}:${componentId.module}:${componentId.version}"))
-            }
+        val dependencies = result.platformComponents.stream()
+          .filter(excludeGuava)
+          .map { componentId ->
+            when (componentId) {
+              is ModuleComponentIdentifier -> {
+                dependencyHandler.platform(dependencyFactory.create("${componentId.group}:${componentId.module}:${componentId.version}"))
+              }
 
-            is ProjectComponentIdentifier -> {
-              dependencyHandler.platform(newProjectDependency(componentId.projectPath))
-            }
+              is ProjectComponentIdentifier -> {
+                dependencyHandler.platform(newProjectDependency(componentId.projectPath))
+              }
 
-            else -> {
-              throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
+              else -> {
+                throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
+              }
             }
-          }
-        }.collect(Collectors.toList())
+          }.collect(Collectors.toList())
 
         GetDependenciesResult(
           constraints = constraints,
           dependencies = dependencies,
         )
       }
+  }
+
+  /**
+   * Exclude `com.google.guava:guava` and `com.google.guava:listenablefuture` from the platform. These are problematic
+   * dependencies.
+   *
+   * nb: difference from Gradle PR (it does not and would not do this).
+   *
+   * TODO(tsr): this could be configurable
+   */
+  private val excludeGuava: (ComponentIdentifier) -> Boolean = { componentId ->
+    if (componentId is ModuleComponentIdentifier) {
+      val identifier = "${componentId.group}:${componentId.module}"
+      identifier !in GUAVA
+    } else {
+      true
+    }
   }
 
   /** A variant, the component it belongs to, and its [kind][Kind] (regular or platform). */
@@ -262,6 +290,8 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
   )
 
   private companion object {
+    val GUAVA = listOf("com.google.guava:listenablefuture", "com.google.guava:guava")
+
     /**
      * Walks a dependency graph BFS from the root, returning the IDs of all components present, in the order they were
      * encountered.
@@ -269,6 +299,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
      * nb: difference from Gradle PR (it has no support for direct platform dependencies).
      */
     fun getComponentIds(root: ComponentAndVariant): GetComponentIdsResult {
+      // These are the things that get returned
       val seenComponents = linkedSetOf<ComponentIdentifier>()
       val seenPlatformComponents = linkedSetOf<ComponentIdentifier>()
 
@@ -281,6 +312,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       while (queue.isNotEmpty()) {
         val next = queue.removeFirst()
 
+        // These are the things that get returned
         // Treat normal and platform dependencies differently
         if (next.kind == Kind.REGULAR) {
           seenComponents.add(next.component.id)
