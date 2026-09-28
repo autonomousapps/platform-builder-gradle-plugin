@@ -86,7 +86,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       it.allowDependencies()
     }
 
-    val platformApi = configurations.dependencyScope("platformApi") { c ->
+    val platformApi = configurations.dependencyScope(PLATFORM_API) { c ->
       c.description = "The declared dependencies to resolve the platform API graph from."
     }
     val apiClasspath = configurations.resolvable("platformApiClasspath") { c ->
@@ -103,7 +103,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       jvmPluginServices.configureAsAndroidCompileClasspath(c)
     }
 
-    val platformRuntime = configurations.dependencyScope("platformRuntime") { c ->
+    val platformRuntime = configurations.dependencyScope(PLATFORM_RUNTIME) { c ->
       c.description = "The additional declared dependencies to resolve the platform runtime graph from."
     }
     val runtimeClasspath = configurations.resolvable("platformRuntimeClasspath") { c ->
@@ -289,8 +289,12 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     val platformComponents: Set<ComponentIdentifier>,
   )
 
-  private companion object {
-    val GUAVA = listOf("com.google.guava:listenablefuture", "com.google.guava:guava")
+  public companion object {
+
+    public const val PLATFORM_API: String = "platformApi"
+    public const val PLATFORM_RUNTIME: String = "platformRuntime"
+
+    private val GUAVA = listOf("com.google.guava:listenablefuture", "com.google.guava:guava")
 
     /**
      * Walks a dependency graph BFS from the root, returning the IDs of all components present, in the order they were
@@ -298,7 +302,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
      *
      * nb: difference from Gradle PR (it has no support for direct platform dependencies).
      */
-    fun getComponentIds(root: ComponentAndVariant): GetComponentIdsResult {
+    private fun getComponentIds(root: ComponentAndVariant): GetComponentIdsResult {
       // These are the things that get returned
       val seenComponents = linkedSetOf<ComponentIdentifier>()
       val seenPlatformComponents = linkedSetOf<ComponentIdentifier>()
