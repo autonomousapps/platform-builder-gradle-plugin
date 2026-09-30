@@ -136,6 +136,9 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
     }
   }
 
+  // TODO:
+  //  1. add test that exercises multiple incoming edges
+  //  2. handle the transitive-of-transive problem, and add test for same
   @ParameterizedTest(name = "{0}")
   @MethodSource("gradleVersions")
   fun `platform describes provenance`(gradleVersion: GradleVersion) {

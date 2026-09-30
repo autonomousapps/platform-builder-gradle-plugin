@@ -80,6 +80,8 @@ dependencies {
     // org.gradle.unsafe.suppress-gradle-api=true
     because("Automatically adding this has been disabled in gradle.properties")
   }
+  implementation(libs.graphSupport)
+  implementation(libs.guava)
 
   compileOnly(libs.agp.api) {
     because("Consumers should break if they don't manage their classpaths correctly.")
