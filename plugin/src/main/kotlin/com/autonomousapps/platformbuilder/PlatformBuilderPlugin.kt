@@ -244,21 +244,22 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
         val constraints = result.regularComponents.stream()
           .filter(excludeGuava)
-          .map { componentId ->
-            val reason = buildReason(rootId, componentId, provenance)
+          .map { thisId ->
+            val reason = buildReason(rootId = rootId, thisId = thisId, provenance = provenance)
 
-            when (componentId) {
+            when (thisId) {
               is ModuleComponentIdentifier -> {
-                val constraint =
-                  dependencyConstraintFactory.create("${componentId.group}:${componentId.module}:${componentId.version}")
-                    // nb: difference from Gradle PR (it has no support for tracking provenance)
-                    .apply { because(reason) }
+                val constraint = dependencyConstraintFactory
+                  .create("${thisId.group}:${thisId.module}:${thisId.version}")
+                  // nb: difference from Gradle PR (it has no support for tracking provenance)
+                  .apply { because(reason) }
 
                 ReasonedDependencyConstraint(constraint, reason)
               }
 
               is ProjectComponentIdentifier -> {
-                val constraint = dependencyConstraintFactory.create(newProjectDependency(componentId.projectPath))
+                val constraint = dependencyConstraintFactory
+                  .create(newProjectDependency(thisId.projectPath))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
@@ -266,7 +267,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
               }
 
               else -> {
-                throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
+                throw GradleException("Unsupported component type '${thisId.javaClass.name}': ${thisId.displayName}")
               }
             }
           }
@@ -274,13 +275,13 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
         val dependencies = result.platformComponents.stream()
           .filter(excludeGuava)
-          .map { componentId ->
-            val reason = buildReason(rootId, componentId, provenance)
+          .map { thisId ->
+            val reason = buildReason(rootId = rootId, thisId = thisId, provenance = provenance)
 
-            when (componentId) {
+            when (thisId) {
               is ModuleComponentIdentifier -> {
                 val dependency = dependencyHandler
-                  .platform(dependencyFactory.create("${componentId.group}:${componentId.module}:${componentId.version}"))
+                  .platform(dependencyFactory.create("${thisId.group}:${thisId.module}:${thisId.version}"))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
@@ -288,7 +289,8 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
               }
 
               is ProjectComponentIdentifier -> {
-                val dependency = dependencyHandler.platform(newProjectDependency(componentId.projectPath))
+                val dependency = dependencyHandler
+                  .platform(newProjectDependency(thisId.projectPath))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
@@ -296,7 +298,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
               }
 
               else -> {
-                throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
+                throw GradleException("Unsupported component type '${thisId.javaClass.name}': ${thisId.displayName}")
               }
             }
           }
