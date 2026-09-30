@@ -117,513 +117,577 @@ internal class MultiModuleFixture(
   }
 
   val expectedModuleFileContents = """
-    |{
-    |  "formatVersion": "1.1",
-    |  "component": {
-    |    "group": "com.example.platform",
-    |    "module": "platform",
-    |    "version": "0.1",
-    |    "attributes": {
-    |      "org.gradle.status": "release"
-    |    }
-    |  },
-    |  "createdBy": {
-    |    "gradle": {
-    |      "version": "${gradleVersion.version}"
-    |    }
-    |  },
-    |  "variants": [
-    |    {
-    |      "name": "apiElements",
-    |      "attributes": {
-    |        "org.gradle.category": "platform",
-    |        "org.gradle.usage": "java-api"
-    |      },
-    |      "dependencies": [
-    |        {
-    |          "group": "androidx.compose",
-    |          "module": "compose-bom",
-    |          "version": {
-    |            "requires": "2026.08.00"
-    |          },
-    |          "attributes": {
-    |            "org.gradle.category": "platform"
-    |          },
-    |          "endorseStrictVersions": true
-    |        },
-    |        {
-    |          "group": "the-project",
-    |          "module": "platform2",
-    |          "version": {
-    |            "requires": "unspecified"
-    |          },
-    |          "attributes": {
-    |            "org.gradle.category": "platform"
-    |          },
-    |          "endorseStrictVersions": true
-    |        }
-    |      ],
-    |      "dependencyConstraints": [
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.viewpager2",
-    |          "module": "viewpager2",
-    |          "version": {
-    |            "requires": "1.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-jvm",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation",
-    |          "version": {
-    |            "requires": "1.2.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation-experimental",
-    |          "version": {
-    |            "requires": "1.4.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.fragment",
-    |          "module": "fragment",
-    |          "version": {
-    |            "requires": "1.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.recyclerview",
-    |          "module": "recyclerview",
-    |          "version": {
-    |            "requires": "1.3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlin",
-    |          "module": "kotlin-stdlib",
-    |          "version": {
-    |            "requires": "2.2.21"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.core",
-    |          "module": "core",
-    |          "version": {
-    |            "requires": "1.7.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.collection",
-    |          "module": "collection",
-    |          "version": {
-    |            "requires": "1.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.viewpager",
-    |          "module": "viewpager",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.loader",
-    |          "module": "loader",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.activity",
-    |          "module": "activity",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-viewmodel",
-    |          "version": {
-    |            "requires": "2.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.customview",
-    |          "module": "customview",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains",
-    |          "module": "annotations",
-    |          "version": {
-    |            "requires": "13.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio-jvm",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-runtime",
-    |          "version": {
-    |            "requires": "2.3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.versionedparcelable",
-    |          "module": "versionedparcelable",
-    |          "version": {
-    |            "requires": "1.1.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-livedata",
-    |          "version": {
-    |            "requires": "2.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.savedstate",
-    |          "module": "savedstate",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-common",
-    |          "version": {
-    |            "requires": "2.3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.arch.core",
-    |          "module": "core-common",
-    |          "version": {
-    |            "requires": "2.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.arch.core",
-    |          "module": "core-runtime",
-    |          "version": {
-    |            "requires": "2.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-livedata-core",
-    |          "version": {
-    |            "requires": "2.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-android",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        }
-    |      ]
-    |    },
-    |    {
-    |      "name": "runtimeElements",
-    |      "attributes": {
-    |        "org.gradle.category": "platform",
-    |        "org.gradle.usage": "java-runtime"
-    |      },
-    |      "dependencies": [
-    |        {
-    |          "group": "androidx.compose",
-    |          "module": "compose-bom",
-    |          "version": {
-    |            "requires": "2026.08.00"
-    |          },
-    |          "attributes": {
-    |            "org.gradle.category": "platform"
-    |          },
-    |          "endorseStrictVersions": true
-    |        },
-    |        {
-    |          "group": "the-project",
-    |          "module": "platform2",
-    |          "version": {
-    |            "requires": "unspecified"
-    |          },
-    |          "attributes": {
-    |            "org.gradle.category": "platform"
-    |          },
-    |          "endorseStrictVersions": true
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlinx",
-    |          "module": "kotlinx-coroutines-bom",
-    |          "version": {
-    |            "requires": "1.11.0"
-    |          },
-    |          "attributes": {
-    |            "org.gradle.category": "platform"
-    |          },
-    |          "endorseStrictVersions": true
-    |        }
-    |      ],
-    |      "dependencyConstraints": [
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.viewpager2",
-    |          "module": "viewpager2",
-    |          "version": {
-    |            "requires": "1.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-jvm",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation",
-    |          "version": {
-    |            "requires": "1.2.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation-experimental",
-    |          "version": {
-    |            "requires": "1.4.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.collection",
-    |          "module": "collection",
-    |          "version": {
-    |            "requires": "1.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.core",
-    |          "module": "core",
-    |          "version": {
-    |            "requires": "1.7.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.fragment",
-    |          "module": "fragment",
-    |          "version": {
-    |            "requires": "1.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.recyclerview",
-    |          "module": "recyclerview",
-    |          "version": {
-    |            "requires": "1.3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlin",
-    |          "module": "kotlin-stdlib",
-    |          "version": {
-    |            "requires": "2.2.21"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-runtime",
-    |          "version": {
-    |            "requires": "2.3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.versionedparcelable",
-    |          "module": "versionedparcelable",
-    |          "version": {
-    |            "requires": "1.1.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.viewpager",
-    |          "module": "viewpager",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.loader",
-    |          "module": "loader",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.activity",
-    |          "module": "activity",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-viewmodel",
-    |          "version": {
-    |            "requires": "2.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.customview",
-    |          "module": "customview",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains",
-    |          "module": "annotations",
-    |          "version": {
-    |            "requires": "13.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio-jvm",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.arch.core",
-    |          "module": "core-runtime",
-    |          "version": {
-    |            "requires": "2.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-common",
-    |          "version": {
-    |            "requires": "2.3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.arch.core",
-    |          "module": "core-common",
-    |          "version": {
-    |            "requires": "2.1.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-livedata",
-    |          "version": {
-    |            "requires": "2.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.savedstate",
-    |          "module": "savedstate",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.lifecycle",
-    |          "module": "lifecycle-livedata-core",
-    |          "version": {
-    |            "requires": "2.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.concurrent",
-    |          "module": "concurrent-futures",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.customview",
-    |          "module": "customview-poolingcontainer",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.core",
-    |          "module": "core-ktx",
-    |          "version": {
-    |            "requires": "1.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-android",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.startup",
-    |          "module": "startup-runtime",
-    |          "version": {
-    |            "requires": "1.2.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.tracing",
-    |          "module": "tracing",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        }
-    |      ]
-    |    }
-    |  ]
-    |}
-    |""".trimMargin()
+    {
+      "formatVersion": "1.1",
+      "component": {
+        "group": "com.example.platform",
+        "module": "platform",
+        "version": "0.1",
+        "attributes": {
+          "org.gradle.status": "release"
+        }
+      },
+      "createdBy": {
+        "gradle": {
+          "version": "${gradleVersion.version}"
+        }
+      },
+      "variants": [
+        {
+          "name": "apiElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-api"
+          },
+          "dependencies": [
+            {
+              "group": "androidx.compose",
+              "module": "compose-bom",
+              "version": {
+                "requires": "2026.08.00"
+              },
+              "attributes": {
+                "org.gradle.category": "platform"
+              },
+              "endorseStrictVersions": true,
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "the-project",
+              "module": "platform2",
+              "version": {
+                "requires": "unspecified"
+              },
+              "attributes": {
+                "org.gradle.category": "platform"
+              },
+              "endorseStrictVersions": true,
+              "reason": "Required by project ':platform'"
+            }
+          ],
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "androidx.viewpager2",
+              "module": "viewpager2",
+              "version": {
+                "requires": "1.1.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation",
+              "version": {
+                "requires": "1.2.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation-experimental",
+              "version": {
+                "requires": "1.4.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.fragment",
+              "module": "fragment",
+              "version": {
+                "requires": "1.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.recyclerview",
+              "module": "recyclerview",
+              "version": {
+                "requires": "1.3.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.core",
+              "module": "core",
+              "version": {
+                "requires": "1.7.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.collection",
+              "module": "collection",
+              "version": {
+                "requires": "1.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.viewpager",
+              "module": "viewpager",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.loader",
+              "module": "loader",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.activity",
+              "module": "activity",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-viewmodel",
+              "version": {
+                "requires": "2.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.customview",
+              "module": "customview",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-runtime",
+              "version": {
+                "requires": "2.3.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.versionedparcelable",
+              "module": "versionedparcelable",
+              "version": {
+                "requires": "1.1.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-livedata",
+              "version": {
+                "requires": "2.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.savedstate",
+              "module": "savedstate",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-common",
+              "version": {
+                "requires": "2.3.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.arch.core",
+              "module": "core-common",
+              "version": {
+                "requires": "2.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.arch.core",
+              "module": "core-runtime",
+              "version": {
+                "requires": "2.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-livedata-core",
+              "version": {
+                "requires": "2.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        },
+        {
+          "name": "runtimeElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-runtime"
+          },
+          "dependencies": [
+            {
+              "group": "androidx.compose",
+              "module": "compose-bom",
+              "version": {
+                "requires": "2026.08.00"
+              },
+              "attributes": {
+                "org.gradle.category": "platform"
+              },
+              "endorseStrictVersions": true,
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "the-project",
+              "module": "platform2",
+              "version": {
+                "requires": "unspecified"
+              },
+              "attributes": {
+                "org.gradle.category": "platform"
+              },
+              "endorseStrictVersions": true,
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "org.jetbrains.kotlinx",
+              "module": "kotlinx-coroutines-bom",
+              "version": {
+                "requires": "1.11.0"
+              },
+              "attributes": {
+                "org.gradle.category": "platform"
+              },
+              "endorseStrictVersions": true,
+              "reason": "Required by project ':platform'"
+            }
+          ],
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "androidx.viewpager2",
+              "module": "viewpager2",
+              "version": {
+                "requires": "1.1.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation",
+              "version": {
+                "requires": "1.2.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation-experimental",
+              "version": {
+                "requires": "1.4.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.collection",
+              "module": "collection",
+              "version": {
+                "requires": "1.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.core",
+              "module": "core",
+              "version": {
+                "requires": "1.7.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.fragment",
+              "module": "fragment",
+              "version": {
+                "requires": "1.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.recyclerview",
+              "module": "recyclerview",
+              "version": {
+                "requires": "1.3.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-runtime",
+              "version": {
+                "requires": "2.3.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.versionedparcelable",
+              "module": "versionedparcelable",
+              "version": {
+                "requires": "1.1.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.viewpager",
+              "module": "viewpager",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.loader",
+              "module": "loader",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.activity",
+              "module": "activity",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-viewmodel",
+              "version": {
+                "requires": "2.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.customview",
+              "module": "customview",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.arch.core",
+              "module": "core-runtime",
+              "version": {
+                "requires": "2.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-common",
+              "version": {
+                "requires": "2.3.1"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.arch.core",
+              "module": "core-common",
+              "version": {
+                "requires": "2.1.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-livedata",
+              "version": {
+                "requires": "2.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.savedstate",
+              "module": "savedstate",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.lifecycle",
+              "module": "lifecycle-livedata-core",
+              "version": {
+                "requires": "2.0.0"
+              },
+              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.concurrent",
+              "module": "concurrent-futures",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.core:core:1.7.0, androidx.recyclerview:recyclerview:1.3.1, androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.customview",
+              "module": "customview-poolingcontainer",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by androidx.recyclerview:recyclerview:1.3.1, androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "androidx.core",
+              "module": "core-ktx",
+              "version": {
+                "requires": "1.5.0"
+              },
+              "reason": "Required by androidx.recyclerview:recyclerview:1.3.1, androidx.viewpager2:viewpager2:1.1.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.startup",
+              "module": "startup-runtime",
+              "version": {
+                "requires": "1.2.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.tracing",
+              "module": "tracing",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        }
+      ]
+    }
+  """.trimIndent()
 }

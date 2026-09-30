@@ -7,7 +7,7 @@ import org.gradle.api.attributes.CompatibilityCheckDetails
 import org.gradle.api.attributes.java.TargetJvmEnvironment
 
 /** We don't care whether we're consuming libraries targeted for a Java or Android environment. */
-internal class AndroidJavaCompatibilityRule : AttributeCompatibilityRule<TargetJvmEnvironment> {
+internal abstract class AndroidJavaCompatibilityRule : AttributeCompatibilityRule<TargetJvmEnvironment> {
   override fun execute(details: CompatibilityCheckDetails<TargetJvmEnvironment>) {
     val producerValue = details.producerValue ?: return
 

@@ -15,18 +15,22 @@
  */
 package com.autonomousapps.platformbuilder
 
+import com.android.build.api.attributes.BuildTypeAttr
 import com.autonomousapps.platformbuilder.PlatformBuilderPlugin.ComponentAndVariant.Kind
 import com.autonomousapps.platformbuilder.internal.model.GetComponentIdsResult
 import com.autonomousapps.platformbuilder.internal.model.GetDependenciesResult
 import com.autonomousapps.platformbuilder.internal.model.ReasonedDependency
 import com.autonomousapps.platformbuilder.internal.model.ReasonedDependencyConstraint
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AarJarCompatibilityRule
+import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidBuildTypeCompatibilityRule
+import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidBuildTypeDisambiguationRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidJavaCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.JvmPluginServices
 import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatform
+import com.autonomousapps.platformbuilder.internal.utils.classpath.isAgpAvailable
+import com.autonomousapps.platformbuilder.internal.utils.classpath.isKgpAvailable
 import com.autonomousapps.platformbuilder.internal.utils.configurations.ConfigurationServices
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
-import com.autonomousapps.platformbuilder.internal.utils.kgp.isKgpAvailable
 import com.autonomousapps.platformbuilder.internal.utils.provenance.buildReason
 import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForConstraints
 import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForDependencies
@@ -203,6 +207,15 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
         // This one never seems to trigger, but also it feels right to define it.
         attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE).run {
           compatibilityRules.add(AndroidJavaCompatibilityRule::class.java)
+        }
+
+        // TODO: handle Android apps?
+        // TODO: what to do about Android product flavors?
+        if (isAgpAvailable()) {
+          attribute(BuildTypeAttr.ATTRIBUTE).run {
+            compatibilityRules.add(AndroidBuildTypeCompatibilityRule::class.java)
+            disambiguationRules.add(AndroidBuildTypeDisambiguationRule::class.java)
+          }
         }
 
         // Requires org.jetbrains.kotlin:kotlin-gradle-plugin-api on the classpath
