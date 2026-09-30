@@ -7,7 +7,7 @@ import org.gradle.api.attributes.CompatibilityCheckDetails
 import org.gradle.api.attributes.LibraryElements
 
 /** We don't care if we're consuming AARs or JARs. */
-internal class AarJarCompatibilityRule : AttributeCompatibilityRule<LibraryElements> {
+internal abstract class AarJarCompatibilityRule : AttributeCompatibilityRule<LibraryElements> {
   override fun execute(details: CompatibilityCheckDetails<LibraryElements>) {
     val producerValue = details.producerValue ?: return
 

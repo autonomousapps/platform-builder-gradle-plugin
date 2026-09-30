@@ -67,392 +67,681 @@ internal class HasGuavaFixture(
   }
 
   private val expectedAndroidContents = """
-    |{
-    |  "formatVersion": "1.1",
-    |  "component": {
-    |    "group": "com.example.platform",
-    |    "module": "platform",
-    |    "version": "0.1",
-    |    "attributes": {
-    |      "org.gradle.status": "release"
-    |    }
-    |  },
-    |  "createdBy": {
-    |    "gradle": {
-    |      "version": "${gradleVersion.version}"
-    |    }
-    |  },
-    |  "variants": [
-    |    {
-    |      "name": "apiElements",
-    |      "attributes": {
-    |        "org.gradle.category": "platform",
-    |        "org.gradle.usage": "java-api"
-    |      },
-    |      "dependencyConstraints": [
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.google.guava",
-    |          "module": "failureaccess",
-    |          "version": {
-    |            "requires": "1.0.3"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jspecify",
-    |          "module": "jspecify",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.google.errorprone",
-    |          "module": "error_prone_annotations",
-    |          "version": {
-    |            "requires": "2.41.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.google.j2objc",
-    |          "module": "j2objc-annotations",
-    |          "version": {
-    |            "requires": "3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-jvm",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlin",
-    |          "module": "kotlin-stdlib",
-    |          "version": {
-    |            "requires": "2.2.21"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains",
-    |          "module": "annotations",
-    |          "version": {
-    |            "requires": "13.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio-jvm",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-android",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        }
-    |      ]
-    |    },
-    |    {
-    |      "name": "runtimeElements",
-    |      "attributes": {
-    |        "org.gradle.category": "platform",
-    |        "org.gradle.usage": "java-runtime"
-    |      },
-    |      "dependencyConstraints": [
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.google.guava",
-    |          "module": "failureaccess",
-    |          "version": {
-    |            "requires": "1.0.3"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jspecify",
-    |          "module": "jspecify",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.google.errorprone",
-    |          "module": "error_prone_annotations",
-    |          "version": {
-    |            "requires": "2.41.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.google.j2objc",
-    |          "module": "j2objc-annotations",
-    |          "version": {
-    |            "requires": "3.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-jvm",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlin",
-    |          "module": "kotlin-stdlib",
-    |          "version": {
-    |            "requires": "2.2.21"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains",
-    |          "module": "annotations",
-    |          "version": {
-    |            "requires": "13.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio-jvm",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-android",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation",
-    |          "version": {
-    |            "requires": "1.10.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.startup",
-    |          "module": "startup-runtime",
-    |          "version": {
-    |            "requires": "1.2.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation-jvm",
-    |          "version": {
-    |            "requires": "1.10.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.tracing",
-    |          "module": "tracing",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        }
-    |      ]
-    |    }
-    |  ]
-    |}
-    |""".trimMargin()
+    {
+      "formatVersion": "1.1",
+      "component": {
+        "group": "com.example.platform",
+        "module": "platform",
+        "version": "0.1",
+        "attributes": {
+          "org.gradle.status": "release"
+        }
+      },
+      "createdBy": {
+        "gradle": {
+          "version": "${gradleVersion.version}"
+        }
+      },
+      "variants": [
+        {
+          "name": "apiElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-api"
+          },
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.google.guava",
+              "module": "failureaccess",
+              "version": {
+                "requires": "1.0.3"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "org.jspecify",
+              "module": "jspecify",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "com.google.errorprone",
+              "module": "error_prone_annotations",
+              "version": {
+                "requires": "2.41.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "com.google.j2objc",
+              "module": "j2objc-annotations",
+              "version": {
+                "requires": "3.1"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        },
+        {
+          "name": "runtimeElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-runtime"
+          },
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.google.guava",
+              "module": "failureaccess",
+              "version": {
+                "requires": "1.0.3"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "org.jspecify",
+              "module": "jspecify",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "com.google.errorprone",
+              "module": "error_prone_annotations",
+              "version": {
+                "requires": "2.41.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "com.google.j2objc",
+              "module": "j2objc-annotations",
+              "version": {
+                "requires": "3.1"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-android"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation",
+              "version": {
+                "requires": "1.10.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.startup",
+              "module": "startup-runtime",
+              "version": {
+                "requires": "1.2.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation-jvm",
+              "version": {
+                "requires": "1.10.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.tracing",
+              "module": "tracing",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        }
+      ]
+    }
+  """.trimIndent()
 
-  private val expectedJreContents = expectedAndroidContents
+  private val expectedJreContents = """
+    {
+      "formatVersion": "1.1",
+      "component": {
+        "group": "com.example.platform",
+        "module": "platform",
+        "version": "0.1",
+        "attributes": {
+          "org.gradle.status": "release"
+        }
+      },
+      "createdBy": {
+        "gradle": {
+          "version": "${gradleVersion.version}"
+        }
+      },
+      "variants": [
+        {
+          "name": "apiElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-api"
+          },
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.google.guava",
+              "module": "failureaccess",
+              "version": {
+                "requires": "1.0.3"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "org.jspecify",
+              "module": "jspecify",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "com.google.errorprone",
+              "module": "error_prone_annotations",
+              "version": {
+                "requires": "2.41.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "com.google.j2objc",
+              "module": "j2objc-annotations",
+              "version": {
+                "requires": "3.1"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        },
+        {
+          "name": "runtimeElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-runtime"
+          },
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.google.guava",
+              "module": "failureaccess",
+              "version": {
+                "requires": "1.0.3"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "org.jspecify",
+              "module": "jspecify",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "com.google.errorprone",
+              "module": "error_prone_annotations",
+              "version": {
+                "requires": "2.41.0"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "com.google.j2objc",
+              "module": "j2objc-annotations",
+              "version": {
+                "requires": "3.1"
+              },
+              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation",
+              "version": {
+                "requires": "1.10.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.startup",
+              "module": "startup-runtime",
+              "version": {
+                "requires": "1.2.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation-jvm",
+              "version": {
+                "requires": "1.10.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.tracing",
+              "module": "tracing",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        }
+      ]
+    }
+  """.trimIndent()
 
   private val expectedListenable1Contents = """
-    |{
-    |  "formatVersion": "1.1",
-    |  "component": {
-    |    "group": "com.example.platform",
-    |    "module": "platform",
-    |    "version": "0.1",
-    |    "attributes": {
-    |      "org.gradle.status": "release"
-    |    }
-    |  },
-    |  "createdBy": {
-    |    "gradle": {
-    |      "version": "${gradleVersion.version}"
-    |    }
-    |  },
-    |  "variants": [
-    |    {
-    |      "name": "apiElements",
-    |      "attributes": {
-    |        "org.gradle.category": "platform",
-    |        "org.gradle.usage": "java-api"
-    |      },
-    |      "dependencyConstraints": [
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-jvm",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlin",
-    |          "module": "kotlin-stdlib",
-    |          "version": {
-    |            "requires": "2.2.21"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains",
-    |          "module": "annotations",
-    |          "version": {
-    |            "requires": "13.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio-jvm",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-android",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        }
-    |      ]
-    |    },
-    |    {
-    |      "name": "runtimeElements",
-    |      "attributes": {
-    |        "org.gradle.category": "platform",
-    |        "org.gradle.usage": "java-runtime"
-    |      },
-    |      "dependencyConstraints": [
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-jvm",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains.kotlin",
-    |          "module": "kotlin-stdlib",
-    |          "version": {
-    |            "requires": "2.2.21"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "org.jetbrains",
-    |          "module": "annotations",
-    |          "version": {
-    |            "requires": "13.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okio",
-    |          "module": "okio-jvm",
-    |          "version": {
-    |            "requires": "3.18.1"
-    |          }
-    |        },
-    |        {
-    |          "group": "com.squareup.okhttp3",
-    |          "module": "okhttp-android",
-    |          "version": {
-    |            "requires": "5.5.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation",
-    |          "version": {
-    |            "requires": "1.10.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.startup",
-    |          "module": "startup-runtime",
-    |          "version": {
-    |            "requires": "1.2.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.annotation",
-    |          "module": "annotation-jvm",
-    |          "version": {
-    |            "requires": "1.10.0"
-    |          }
-    |        },
-    |        {
-    |          "group": "androidx.tracing",
-    |          "module": "tracing",
-    |          "version": {
-    |            "requires": "1.0.0"
-    |          }
-    |        }
-    |      ]
-    |    }
-    |  ]
-    |}
-    |""".trimMargin()
+    {
+      "formatVersion": "1.1",
+      "component": {
+        "group": "com.example.platform",
+        "module": "platform",
+        "version": "0.1",
+        "attributes": {
+          "org.gradle.status": "release"
+        }
+      },
+      "createdBy": {
+        "gradle": {
+          "version": "${gradleVersion.version}"
+        }
+      },
+      "variants": [
+        {
+          "name": "apiElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-api"
+          },
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        },
+        {
+          "name": "runtimeElements",
+          "attributes": {
+            "org.gradle.category": "platform",
+            "org.gradle.usage": "java-runtime"
+          },
+          "dependencyConstraints": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by project ':platform'"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib",
+              "version": {
+                "requires": "2.2.21"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "org.jetbrains",
+              "module": "annotations",
+              "version": {
+                "requires": "13.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okio",
+              "module": "okio-jvm",
+              "version": {
+                "requires": "3.18.1"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-android",
+              "version": {
+                "requires": "5.5.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation",
+              "version": {
+                "requires": "1.10.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.startup",
+              "module": "startup-runtime",
+              "version": {
+                "requires": "1.2.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.annotation",
+              "module": "annotation-jvm",
+              "version": {
+                "requires": "1.10.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            },
+            {
+              "group": "androidx.tracing",
+              "module": "tracing",
+              "version": {
+                "requires": "1.0.0"
+              },
+              "reason": "Required by com.squareup.okhttp3:okhttp-android:5.5.0, com.squareup.okhttp3:okhttp:5.5.0"
+            }
+          ]
+        }
+      ]
+    }
+  """.trimIndent()
 
   private val expectedListenable9999Contents = expectedListenable1Contents
 }
