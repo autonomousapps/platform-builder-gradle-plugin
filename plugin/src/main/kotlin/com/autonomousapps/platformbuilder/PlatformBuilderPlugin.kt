@@ -288,7 +288,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
                     // nb: difference from Gradle PR (it has no support for tracking provenance)
                     .apply { because(reason) }
 
-                DependencyConstraintAndReason(constraint, reason)
+                ReasonedDependencyConstraint(constraint, reason)
               }
 
               is ProjectComponentIdentifier -> {
@@ -296,7 +296,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
-                DependencyConstraintAndReason(constraint, reason)
+                ReasonedDependencyConstraint(constraint, reason)
               }
 
               else -> {
@@ -321,7 +321,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
-                DependencyAndReason(dependency, reason)
+                ReasonedDependency(dependency, reason)
 
               }
 
@@ -330,7 +330,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
-                DependencyAndReason(dependency, reason)
+                ReasonedDependency(dependency, reason)
               }
 
               else -> {
@@ -376,17 +376,18 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
   }
 
   // nb: difference from Gradle PR (it has no support for direct platform dependencies)
+  // TODO: consider returning a stronger type than Collection. It could simplify the mapping above.
   private class GetDependenciesResult(
-    val constraints: Collection<DependencyConstraintAndReason>,
-    val dependencies: Collection<DependencyAndReason>,
+    val constraints: Collection<ReasonedDependencyConstraint>,
+    val dependencies: Collection<ReasonedDependency>,
   )
 
-  private class DependencyConstraintAndReason(
+  private class ReasonedDependencyConstraint(
     val dependencyConstraint: DependencyConstraint,
     val reason: String,
   )
 
-  private class DependencyAndReason(
+  private class ReasonedDependency(
     val dependency: Dependency,
     val reason: String,
   )

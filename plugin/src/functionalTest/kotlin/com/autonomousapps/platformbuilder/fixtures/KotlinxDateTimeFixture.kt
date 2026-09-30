@@ -6,7 +6,6 @@ import com.autonomousapps.kit.GradleProject
 import com.autonomousapps.platformbuilder.fixtures.HasGuavaFixture.Dependency
 import org.gradle.util.GradleVersion
 
-//square-okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "square-okio" }
 internal class KotlinxDateTimeFixture(
   gradleVersion: GradleVersion,
 ) : AbstractFixture(gradleVersion) {
