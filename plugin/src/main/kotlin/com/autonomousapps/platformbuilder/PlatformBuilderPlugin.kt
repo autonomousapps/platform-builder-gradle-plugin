@@ -145,7 +145,11 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       c.dependencies.addAllLater(androidApiDependencies.map { it.map { it.dependency } })
     }
 
-    // TODO: the runtime graph requires special consideration re the `because` (provenance) string.
+    // The runtime graph requires special consideration re the `because` (provenance) string. We provide the same
+    // provenance as the API graph, where applicable. This is necessary because the runtime is configured to resolve
+    // consistently with the api, so the runtime graph has a "flattened" aspect to it that invalidates assumptions made
+    // in how we track provenance for the API graph.
+    // nb: difference from Gradle PR (it has no support for tracking provenance)
     configurations.named(JavaPlatformPlugin.RUNTIME_CONFIGURATION_NAME).configure { c ->
       val javaDependenciesResult = getDependencies(runtimeClasspath)
       val javaConstraints = javaDependenciesResult.map(GetDependenciesResult::constraints)
@@ -155,76 +159,20 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
       val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      // TODO: simplify
-      // TODO: does usage of `zip` break this? Probably. Maybe a map/flatMap would be better
-      val jConstraints = javaConstraints.flatMap { runtime ->
-        javaApiConstraints.map { api ->
-          runtime.map { r ->
-            val reason = api.find { it.dependencyConstraint == r.dependencyConstraint }?.reason
-            r.dependencyConstraint.apply { reason?.let { because(it) } }
-          }
-        }
-      }
-//      val jConstraints = javaConstraints.zip(javaApiConstraints) { runtime, api ->
-//        runtime.map { r ->
-//          val reason = api.find { it.dependencyConstraint == r.dependencyConstraint }?.reason
-//          r.dependencyConstraint.apply { reason?.let { because(it) } }
-//        }
-//      }
-      val jDependencies = javaDependencies.flatMap { runtime ->
-        javaApiDependencies.map { api ->
-          runtime.map { r ->
-            val reason = api.find { it.dependency == r.dependency }?.reason
-            r.dependency.apply { reason?.let { because(it) } }
-          }
-        }
-      }
-//      val jDependencies = javaDependencies.zip(javaApiDependencies) { runtime, api ->
-//        runtime.map { r ->
-//          val reason = api.find { it.dependency == r.dependency }?.reason
-//          r.dependency.apply { reason?.let { because(it) } }
-//        }
-//      }
-      val aConstraints = androidConstraints.flatMap { runtime ->
-        androidApiConstraints.map { api ->
-          runtime.map { r ->
-            val reason = api.find { it.dependencyConstraint == r.dependencyConstraint }?.reason
-            r.dependencyConstraint.apply { reason?.let { because(it) } }
-          }
-        }
-      }
-//      val aConstraints = androidConstraints.zip(androidApiConstraints) { runtime, api ->
-//        runtime.map { r ->
-//          val reason = api.find { it.dependencyConstraint == r.dependencyConstraint }?.reason
-//          r.dependencyConstraint.apply { reason?.let { because(it) } }
-//        }
-//      }
-      val aDependencies = androidDependencies.flatMap { runtime ->
-        androidApiDependencies.map { api ->
-          runtime.map { r ->
-            val reason = api.find { it.dependency == r.dependency }?.reason
-            r.dependency.apply { reason?.let { because(it) } }
-          }
-        }
-      }
-//      val aDependencies = androidDependencies.zip(androidApiDependencies) { runtime, api ->
-//        runtime.map { r ->
-//          val reason = api.find { it.dependency == r.dependency }?.reason
-//          r.dependency.apply { reason?.let { because(it) } }
-//        }
-//      }
+      // TODO: document that this overwrites any previously-established reason. Or figure some way to only do it once (harder)
+      // nb: difference from Gradle PR (it has no support for tracking provenance)
+      val jConstraints = javaConstraints.withProvenanceFrom(javaApiConstraints)
+      val jDependencies = javaDependencies.withProvenanceFrom(javaApiDependencies)
+      val aConstraints = androidConstraints.withProvenanceFrom(androidApiConstraints)
+      val aDependencies = androidDependencies.withProvenanceFrom(androidApiDependencies)
 
       c.dependencyConstraints.addAllLater(jConstraints)
-//      c.dependencyConstraints.addAllLater(javaConstraints.map { constraints -> constraints.map { it.dependencyConstraint } })
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
       c.dependencies.addAllLater(jDependencies)
-//      c.dependencies.addAllLater(javaDependencies.map { dependencies -> dependencies.map { it.dependency } })
 
       // nb: difference from Gradle PR (it has no support for Android library dependencies)
       c.dependencyConstraints.addAllLater(aConstraints)
-//      c.dependencyConstraints.addAllLater(androidConstraints.map { constraints -> constraints.map { it.dependencyConstraint } })
       c.dependencies.addAllLater(aDependencies)
-//      c.dependencies.addAllLater(androidDependencies.map { dependencies -> dependencies.map { it.dependency } })
     }
 
     // nb: difference from Gradle PR (it has no support for Android library dependencies or Kotlin platform type)
@@ -256,13 +204,41 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     }
   }
 
+  // nb: difference from Gradle PR (it has no support for tracking provenance)
+  private fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceFrom(
+    apiConstraints: Provider<Collection<ReasonedDependencyConstraint>>
+  ): Provider<List<DependencyConstraint>> {
+    return flatMap { runtime ->
+      apiConstraints.map { api ->
+        runtime.map { r ->
+          val reason = api.find { it.dependencyConstraint == r.dependencyConstraint }?.reason
+          r.dependencyConstraint.apply { reason?.let { because(it) } }
+        }
+      }
+    }
+  }
+
+  // nb: difference from Gradle PR (it has no support for tracking provenance)
+  private fun Provider<Collection<ReasonedDependency>>.withProvenanceFrom(
+    apiDependencies: Provider<Collection<ReasonedDependency>>
+  ): Provider<List<Dependency>> {
+    return flatMap { runtime ->
+      apiDependencies.map { api ->
+        runtime.map { r ->
+          val reason = api.find { it.dependency == r.dependency }?.reason
+          r.dependency.apply { reason?.let { because(it) } }
+        }
+      }
+    }
+  }
+
   /**
    * Given a configuration, for each component in its resolved graph, return a dependency constraint for that component.
    *
    * nb: difference from Gradle PR (it has no support for direct platform dependencies).
    */
   private fun Project.getDependencies(
-    graphConfiguration: NamedDomainObjectProvider<ResolvableConfiguration>,
+    graphConfiguration: NamedDomainObjectProvider<ResolvableConfiguration>
   ): Provider<GetDependenciesResult> {
     return graphConfiguration
       .flatMap { c ->
@@ -376,7 +352,6 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
   }
 
   // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-  // TODO: consider returning a stronger type than Collection. It could simplify the mapping above.
   private class GetDependenciesResult(
     val constraints: Collection<ReasonedDependencyConstraint>,
     val dependencies: Collection<ReasonedDependency>,
