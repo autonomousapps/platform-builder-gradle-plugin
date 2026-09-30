@@ -28,7 +28,8 @@ import com.autonomousapps.platformbuilder.internal.utils.configurations.Configur
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
 import com.autonomousapps.platformbuilder.internal.utils.kgp.isKgpAvailable
 import com.autonomousapps.platformbuilder.internal.utils.provenance.buildReason
-import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceFrom
+import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForConstraints
+import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForDependencies
 import com.google.common.graph.ElementOrder
 import com.google.common.graph.GraphBuilder
 import com.google.common.graph.ImmutableGraph
@@ -179,10 +180,10 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
 
       // nb: difference from Gradle PR (it has no support for tracking provenance)
-      val jConstraints = javaConstraints.withProvenanceFrom(javaApiConstraints)
-      val jDependencies = javaDependencies.withProvenanceFrom(javaApiDependencies)
-      val aConstraints = androidConstraints.withProvenanceFrom(androidApiConstraints)
-      val aDependencies = androidDependencies.withProvenanceFrom(androidApiDependencies)
+      val jConstraints = javaConstraints.withProvenanceForConstraints(javaApiConstraints)
+      val jDependencies = javaDependencies.withProvenanceForDependencies(javaApiDependencies)
+      val aConstraints = androidConstraints.withProvenanceForConstraints(androidApiConstraints)
+      val aDependencies = androidDependencies.withProvenanceForDependencies(androidApiDependencies)
 
       c.dependencyConstraints.addAllLater(jConstraints)
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)

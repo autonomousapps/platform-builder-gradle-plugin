@@ -20,7 +20,7 @@ internal fun buildReason(
 private fun buildReason(incomingEdges: Set<ComponentIdentifier>): String {
   return incomingEdges
     .mapTo(sortedSetOf()) { it.consistentDisplayName }
-    .joinToString(prefix = "Required by ", separator = ", ") { "'$it'" }
+    .joinToString(prefix = "Required by ", separator = ", ")
 }
 
 private fun computeDirectContributors(

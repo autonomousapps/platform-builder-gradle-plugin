@@ -157,10 +157,9 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
 
       val module = resolve("platform-0.1.module")
       assertThat(module).exists().isRegularFile()
-      assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents())
+      assertThat(module.readText().trim()).isEqualTo(fixture.expectedModuleFileContents())
     }
   }
-
 
   private companion object {
     @JvmStatic

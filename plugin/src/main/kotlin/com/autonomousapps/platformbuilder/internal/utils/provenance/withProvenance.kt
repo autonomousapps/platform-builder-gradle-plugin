@@ -8,7 +8,7 @@ import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.api.provider.Provider
 
-internal fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceFrom(
+internal fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceForConstraints(
   apiConstraints: Provider<Collection<ReasonedDependencyConstraint>>
 ): Provider<List<DependencyConstraint>> {
   return flatMap { runtime ->
@@ -21,7 +21,7 @@ internal fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceFr
   }
 }
 
-internal fun Provider<Collection<ReasonedDependency>>.withProvenanceFrom(
+internal fun Provider<Collection<ReasonedDependency>>.withProvenanceForDependencies(
   apiDependencies: Provider<Collection<ReasonedDependency>>
 ): Provider<List<Dependency>> {
   return flatMap { runtime ->
