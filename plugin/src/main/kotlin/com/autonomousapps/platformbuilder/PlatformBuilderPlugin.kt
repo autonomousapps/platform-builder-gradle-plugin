@@ -218,7 +218,6 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
           }
         }
 
-        // Requires org.jetbrains.kotlin:kotlin-gradle-plugin-api on the classpath
         if (isKgpAvailable()) {
           KotlinPlatformType.setupAttributesMatchingStrategy(this)
         }

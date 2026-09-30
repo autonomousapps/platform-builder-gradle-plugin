@@ -20,9 +20,9 @@ internal abstract class AndroidBuildTypeCompatibilityRule : AttributeCompatibili
   }
 }
 
+/** We prefer the "release" build type, since this is what external (published) Android libraries typically are. */
 internal abstract class AndroidBuildTypeDisambiguationRule : AttributeDisambiguationRule<BuildTypeAttr> {
   override fun execute(details: MultipleCandidatesDetails<BuildTypeAttr>): Unit = details.run {
-    // may be null
     if (consumerValue != null && consumerValue in candidateValues) {
       details.closestMatch(consumerValue!!)
     }
