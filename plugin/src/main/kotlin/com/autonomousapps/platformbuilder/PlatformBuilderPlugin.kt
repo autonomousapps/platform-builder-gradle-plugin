@@ -16,15 +16,20 @@
 package com.autonomousapps.platformbuilder
 
 import com.autonomousapps.platformbuilder.PlatformBuilderPlugin.ComponentAndVariant.Kind
+import com.autonomousapps.platformbuilder.internal.model.GetComponentIdsResult
+import com.autonomousapps.platformbuilder.internal.model.GetDependenciesResult
+import com.autonomousapps.platformbuilder.internal.model.ReasonedDependency
+import com.autonomousapps.platformbuilder.internal.model.ReasonedDependencyConstraint
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AarJarCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidJavaCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.JvmPluginServices
 import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatform
 import com.autonomousapps.platformbuilder.internal.utils.configurations.ConfigurationServices
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
+import com.autonomousapps.platformbuilder.internal.utils.kgp.isKgpAvailable
 import com.autonomousapps.platformbuilder.internal.utils.provenance.buildReason
+import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceFrom
 import com.google.common.graph.ElementOrder
-import com.google.common.graph.Graph
 import com.google.common.graph.GraphBuilder
 import com.google.common.graph.ImmutableGraph
 import org.gradle.api.GradleException
@@ -67,8 +72,24 @@ import kotlin.collections.ArrayDeque
  * plugins {
  *   id("com.autonomousapps.platform-builder")
  * }
+ *
+ * // optional
+ * platformBuilder {
+ *   ...
+ * }
+ *
+ * dependencies {
+ *   // When using dependencies (and their transitive graphs) as the source of constraints
+ *   platformApi(...)
+ *   platformRuntime(...)
+ *
+ *   // When using other platforms as the source of constraints
+ *   platformApi(platform(...))
+ *   platformRuntime(platform(...))
+ * }
  * ```
  *
+ * @see [PlatformBuilderExtension]
  * @see <a href="https://github.com/gradle/gradle/pull/38879/changes#diff-e6c25176a72258f0ddf524b667ff6e5ef807bbbfef115dd469baab7fc3435fac>Create JavaPlatformBuilderPlugin</a>
  */
 @Suppress("UnstableApiUsage")
@@ -145,10 +166,8 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       c.dependencies.addAllLater(androidApiDependencies.map { it.map { it.dependency } })
     }
 
-    // The runtime graph requires special consideration re the `because` (provenance) string. We provide the same
-    // provenance as the API graph, where applicable. This is necessary because the runtime is configured to resolve
-    // consistently with the api, so the runtime graph has a "flattened" aspect to it that invalidates assumptions made
-    // in how we track provenance for the API graph.
+    // The runtime graph requires special consideration re the `because` (provenance) string. See note on the
+    // `getDependencies()` method.
     // nb: difference from Gradle PR (it has no support for tracking provenance)
     configurations.named(JavaPlatformPlugin.RUNTIME_CONFIGURATION_NAME).configure { c ->
       val javaDependenciesResult = getDependencies(runtimeClasspath)
@@ -159,7 +178,6 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
       val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      // TODO: document that this overwrites any previously-established reason. Or figure some way to only do it once (harder)
       // nb: difference from Gradle PR (it has no support for tracking provenance)
       val jConstraints = javaConstraints.withProvenanceFrom(javaApiConstraints)
       val jDependencies = javaDependencies.withProvenanceFrom(javaApiDependencies)
@@ -175,7 +193,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       c.dependencies.addAllLater(aDependencies)
     }
 
-    // nb: difference from Gradle PR (it has no support for Android library dependencies or Kotlin platform type)
+    // nb: difference from Gradle PR (it has no support for Android library dependencies nor Kotlin)
     dependencyHandler.run {
       attributesSchema.run {
         attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE).run {
@@ -194,48 +212,20 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     }
   }
 
-  // nb: difference from Gradle PR (it has no support for Kotlin platform type)
-  private fun isKgpAvailable(): Boolean {
-    return try {
-      Class.forName("org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType", false, javaClass.classLoader)
-      true
-    } catch (_: ClassNotFoundException) {
-      false
-    }
-  }
-
-  // nb: difference from Gradle PR (it has no support for tracking provenance)
-  private fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceFrom(
-    apiConstraints: Provider<Collection<ReasonedDependencyConstraint>>
-  ): Provider<List<DependencyConstraint>> {
-    return flatMap { runtime ->
-      apiConstraints.map { api ->
-        runtime.map { r ->
-          val reason = api.find { it.dependencyConstraint == r.dependencyConstraint }?.reason
-          r.dependencyConstraint.apply { reason?.let { because(it) } }
-        }
-      }
-    }
-  }
-
-  // nb: difference from Gradle PR (it has no support for tracking provenance)
-  private fun Provider<Collection<ReasonedDependency>>.withProvenanceFrom(
-    apiDependencies: Provider<Collection<ReasonedDependency>>
-  ): Provider<List<Dependency>> {
-    return flatMap { runtime ->
-      apiDependencies.map { api ->
-        runtime.map { r ->
-          val reason = api.find { it.dependency == r.dependency }?.reason
-          r.dependency.apply { reason?.let { because(it) } }
-        }
-      }
-    }
-  }
-
   /**
    * Given a configuration, for each component in its resolved graph, return a dependency constraint for that component.
    *
-   * nb: difference from Gradle PR (it has no support for direct platform dependencies).
+   * We also hydrate each [Dependency] (platform) and [DependencyConstraint] with a reason (its "provenance") using
+   * `because()`. This is primarily intended as a debugging aid, as it allows end-users to understand the source of the
+   * dependency(constraint). This hydration uses the direct entry point in the platform-builder's graph, rather than the
+   * proximal/direct source that may be arbitrarily deep in a dependency graph.
+   *
+   * Note that the provenance supplied here may be overwritten when adding these dependencies to the Java Platform
+   * plugin's `runtime` configuration. We provide the same provenance as the API graph, where applicable. This is
+   * necessary because the runtime is configured to resolve consistently with the api, so the runtime graph has a
+   * "flattened" aspect to it that invalidates assumptions made in how we track provenance for the API graph.
+   *
+   * nb: difference from Gradle PR (it has no support for direct platform dependencies, nor provenance).
    */
   private fun Project.getDependencies(
     graphConfiguration: NamedDomainObjectProvider<ResolvableConfiguration>
@@ -289,16 +279,12 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
             when (componentId) {
               is ModuleComponentIdentifier -> {
-                root.variant.owner
-                root.component
-
                 val dependency = dependencyHandler
                   .platform(dependencyFactory.create("${componentId.group}:${componentId.module}:${componentId.version}"))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
                   .apply { because(reason) }
 
                 ReasonedDependency(dependency, reason)
-
               }
 
               is ProjectComponentIdentifier -> {
@@ -350,29 +336,6 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       REGULAR, PLATFORM
     }
   }
-
-  // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-  private class GetDependenciesResult(
-    val constraints: Collection<ReasonedDependencyConstraint>,
-    val dependencies: Collection<ReasonedDependency>,
-  )
-
-  private class ReasonedDependencyConstraint(
-    val dependencyConstraint: DependencyConstraint,
-    val reason: String,
-  )
-
-  private class ReasonedDependency(
-    val dependency: Dependency,
-    val reason: String,
-  )
-
-  // nb: difference from Gradle PR (it has no support for direct platform dependencies, nor provenance)
-  private class GetComponentIdsResult(
-    val regularComponents: Set<ComponentIdentifier>,
-    val platformComponents: Set<ComponentIdentifier>,
-    val provenance: Graph<ComponentIdentifier>,
-  )
 
   public companion object {
 

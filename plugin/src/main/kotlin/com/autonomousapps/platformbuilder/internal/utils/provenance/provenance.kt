@@ -23,18 +23,17 @@ private fun buildReason(incomingEdges: Set<ComponentIdentifier>): String {
     .joinToString(prefix = "Required by ", separator = ", ") { "'$it'" }
 }
 
-// TODO: error-handling on Graph methods
 private fun computeDirectContributors(
   rootId: ComponentIdentifier,
   thisId: ComponentIdentifier,
   provenance: Graph<ComponentIdentifier>,
 ): Set<ComponentIdentifier> {
   // TODO: doing this would avoid the cost of reversing the graph for direct edges from the root. Is that actually
-  //  expensive?
-//  val directChildren = provenance.children(rootId)
-//  if (directChildren.contains(thisId)) {
-//
-//  }
+  //  expensive? If not expensive, not sure it's worth complexifying this code.
+  //   val directChildren = provenance.children(rootId)
+  //   if (directChildren.contains(thisId)) {
+  //
+  //   }
 
   // Reverse the graph so we can see all nodes upstream of this node.
   val reversed = provenance.reversed()
