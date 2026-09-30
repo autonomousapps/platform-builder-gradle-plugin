@@ -22,6 +22,8 @@ import com.autonomousapps.platformbuilder.internal.utils.attributes.JvmPluginSer
 import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatform
 import com.autonomousapps.platformbuilder.internal.utils.configurations.ConfigurationServices
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
+import com.autonomousapps.platformbuilder.internal.utils.provenance.declareProvenance
+import com.autonomousapps.platformbuilder.internal.utils.provenance.putReason
 import org.gradle.api.GradleException
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Plugin
@@ -205,6 +207,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
         //  strict versions. Or we should add a strictPlatform wrapper, similar to enforcedPlatform, that lets you
         //  interpret a platform as all strict versions.
         val result = getComponentIds(root)
+        val provenance = result.provenance
 
         val constraints = result.regularComponents.stream()
           .filter(excludeGuava)
@@ -212,35 +215,49 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
             when (componentId) {
               is ModuleComponentIdentifier -> {
                 dependencyConstraintFactory.create("${componentId.group}:${componentId.module}:${componentId.version}")
+                  // nb: difference from Gradle PR (it has no support for tracking provenance)
+                  .declareProvenance(componentId, provenance)
               }
 
               is ProjectComponentIdentifier -> {
                 dependencyConstraintFactory.create(newProjectDependency(componentId.projectPath))
+                  // nb: difference from Gradle PR (it has no support for tracking provenance)
+                  .declareProvenance(componentId, provenance)
               }
 
               else -> {
                 throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
               }
             }
-          }.collect(Collectors.toList())
+          }
+          .collect(Collectors.toList())
 
         val dependencies = result.platformComponents.stream()
           .filter(excludeGuava)
           .map { componentId ->
             when (componentId) {
               is ModuleComponentIdentifier -> {
+                root.variant.owner
+                root.component
+
                 dependencyHandler.platform(dependencyFactory.create("${componentId.group}:${componentId.module}:${componentId.version}"))
+                  // nb: difference from Gradle PR (it has no support for tracking provenance)
+                  .declareProvenance(componentId, provenance)
               }
 
               is ProjectComponentIdentifier -> {
                 dependencyHandler.platform(newProjectDependency(componentId.projectPath))
+                  // nb: difference from Gradle PR (it has no support for tracking provenance)
+                  .declareProvenance(componentId, provenance)
               }
 
               else -> {
                 throw GradleException("Unsupported component type '${componentId.javaClass.name}': ${componentId.displayName}")
               }
             }
-          }.collect(Collectors.toList())
+          }
+          .map { it.apply { because(root.component.id.displayName) } }
+          .collect(Collectors.toList())
 
         GetDependenciesResult(
           constraints = constraints,
@@ -287,6 +304,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
   private class GetComponentIdsResult(
     val regularComponents: Set<ComponentIdentifier>,
     val platformComponents: Set<ComponentIdentifier>,
+    val provenance: Map<ComponentIdentifier, Set<ComponentIdentifier>>,
   )
 
   public companion object {
@@ -306,6 +324,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       // These are the things that get returned
       val seenComponents = linkedSetOf<ComponentIdentifier>()
       val seenPlatformComponents = linkedSetOf<ComponentIdentifier>()
+      val provenance = linkedMapOf<ComponentIdentifier, MutableSet<ComponentIdentifier>>()
 
       val seenVariants = mutableSetOf<ResolvedVariantResult>()
       val queue = ArrayDeque<ComponentAndVariant>()
@@ -332,13 +351,24 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
         for (dependency in next.component.getDependenciesForVariant(next.variant)) {
           if (dependency is ResolvedDependencyResult) {
-            val component = dependency.selected
-            val variant = dependency.resolvedVariant
+            val selectedComponent = dependency.selected
+            val resolvedVariant = dependency.resolvedVariant
 
-            if (seenVariants.add(variant)) {
+            if (seenVariants.add(resolvedVariant)) {
               // nb: difference from Gradle PR (it has no support for direct platform dependencies)
               val kind = if (dependency.isJavaPlatform()) Kind.PLATFORM else Kind.REGULAR
-              queue.add(ComponentAndVariant(component, variant, kind))
+              queue.add(ComponentAndVariant(selectedComponent, resolvedVariant, kind))
+            }
+
+            // If the selected component is the requested component, then we can say that the requested component's
+            // incoming edge is the "reason" for it—this helps us track provenance.
+            // nb: difference from Gradle PR (it has no support for tracking provenance)
+            // nb: strict matching is imperfect (doesn't handle dynamic versions)
+            // https://github.com/gradle/gradle/blob/v9.8.0/platforms/software/dependency-management/src/main/java/org/gradle/internal/component/external/model/DefaultModuleComponentSelector.java#L144
+            val isRequested = dependency.requested.matchesStrictly(selectedComponent.id)
+            if (isRequested) {
+              val incomingEdge = dependency.from.id
+              provenance.putReason(selectedComponent.id, incomingEdge)
             }
           } else if (dependency is UnresolvedDependencyResult) {
             throw GradleException("Failed to build platform.", dependency.failure)
@@ -352,6 +382,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       return GetComponentIdsResult(
         regularComponents = Collections.unmodifiableSet(seenComponents),
         platformComponents = Collections.unmodifiableSet(seenPlatformComponents),
+        provenance = Collections.unmodifiableMap(provenance),
       )
     }
   }

@@ -5,6 +5,7 @@ package com.autonomousapps.platformbuilder
 import com.autonomousapps.kit.GradleBuilder.build
 import com.autonomousapps.platformbuilder.fixtures.HasGuavaFixture
 import com.autonomousapps.platformbuilder.fixtures.KmpFixture
+import com.autonomousapps.platformbuilder.fixtures.KotlinxDateTimeFixture
 import com.autonomousapps.platformbuilder.fixtures.MultiModuleFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.util.GradleVersion
@@ -134,6 +135,29 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
       assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents())
     }
   }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("gradleVersions")
+  fun `platform describes provenance`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = KotlinxDateTimeFixture(gradleVersion)
+    val gradleProject = fixture.build()
+
+    // When
+    build(gradleVersion, gradleProject.rootDir, ":platform:publishPlatformPublicationToTestRepository")
+
+    // Then
+    val repo = gradleProject.singleArtifact("platform", "repo/com/example/platform/platform/0.1")
+    with(repo.asPath) {
+      assertThat(this).exists().isDirectory()
+      assertThat(resolve("platform-0.1.pom")).exists().isRegularFile()
+
+      val module = resolve("platform-0.1.module")
+      assertThat(module).exists().isRegularFile()
+      assertThat(module.readText()).isEqualTo(fixture.expectedModuleFileContents())
+    }
+  }
+
 
   private companion object {
     @JvmStatic
