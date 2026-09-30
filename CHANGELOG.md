@@ -1,5 +1,9 @@
 **Platform Builder Gradle Plugin** Changelog
 
+## Version 0.4
+* [feat]: track provenance.
+* [feat]: support local Android libraries as source of constraints.
+
 ## Version 0.3
 * [fix]: don't emit constraints relating to `com.google.guava:guava` or `com.google.guava:listenablefuture`. (Ugly hack)
 
