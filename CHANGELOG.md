@@ -1,5 +1,8 @@
 **Platform Builder Gradle Plugin** Changelog
 
+## Version 0.6
+* [fix]: check for self-references and don't include them in the provenance graph.
+
 ## Version 0.5
 * [fix]: support determining provenance with rich-version detection heuristic.
 
