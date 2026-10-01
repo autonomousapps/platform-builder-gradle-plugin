@@ -46,6 +46,7 @@ import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.api.artifacts.ResolvableConfiguration
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ModuleComponentSelector
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.dsl.DependencyConstraintFactory
 import org.gradle.api.artifacts.dsl.DependencyFactory
@@ -415,7 +416,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
             // nb: strict matching is imperfect (doesn't handle dynamic versions)
             // https://github.com/gradle/gradle/blob/v9.8.0/platforms/software/dependency-management/src/main/java/org/gradle/internal/component/external/model/DefaultModuleComponentSelector.java#L144
             val isRequested = dependency.requested.matchesStrictly(selectedComponent.id)
-            if (isRequested) {
+            if (isRequested || dependency.isRichVersionRequest()) {
               val incomingEdge = dependency.from.id
               provenance.putEdge(incomingEdge, selectedComponent.id)
             }
@@ -435,4 +436,25 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       )
     }
   }
+}
+
+/**
+ * A heuristic to determine if a dependency is requested with a rich version.
+ *
+ * @see <a href="https://docs.gradle.org/current/userguide/dependency_versions.html>Rich versions</a>
+ */
+internal fun ResolvedDependencyResult.isRichVersionRequest(): Boolean {
+  val requested = requested as? ModuleComponentSelector ?: return false
+
+  val constraint = requested.versionConstraint
+  val hasPreferredVersion = constraint.preferredVersion.isNotEmpty()
+  val hasStrictVersion = constraint.strictVersion.isNotEmpty()
+
+  if (hasPreferredVersion || hasStrictVersion) {
+    return true
+  }
+
+  // TODO: extract as static variable
+  val richSignals = setOf("[", "]", "(", ")", ",", "+", "latest.")
+  return richSignals.any { signal -> constraint.requiredVersion.contains(signal) }
 }

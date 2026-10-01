@@ -15,7 +15,7 @@ internal fun buildReason(
   rootId: ComponentIdentifier,
   thisId: ComponentIdentifier,
   provenance: Graph<ComponentIdentifier>,
-): String = buildReason(computeDirectContributors(rootId, thisId, provenance))
+): String = buildReason(computeDirectContributors(rootId = rootId, thisId = thisId, provenance = provenance))
 
 private fun buildReason(incomingEdges: Set<ComponentIdentifier>): String {
   return incomingEdges

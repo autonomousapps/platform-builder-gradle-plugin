@@ -8,6 +8,7 @@ import com.autonomousapps.platformbuilder.fixtures.KmpFixture
 import com.autonomousapps.platformbuilder.fixtures.KotlinxDateTimeFixture
 import com.autonomousapps.platformbuilder.fixtures.MultiModuleFixture
 import com.autonomousapps.platformbuilder.fixtures.MultipleIncomingEdgesFixture
+import com.autonomousapps.platformbuilder.fixtures.RichVersionsFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.util.GradleVersion
 import org.junit.jupiter.params.ParameterizedTest
@@ -164,6 +165,28 @@ internal class PlatformBuilderPluginTest : AbstractFunctionalTest() {
   fun `platform describes provenance for multiple incoming edges`(gradleVersion: GradleVersion) {
     // Given
     val fixture = MultipleIncomingEdgesFixture(gradleVersion)
+    val gradleProject = fixture.build()
+
+    // When
+    build(gradleVersion, gradleProject.rootDir, ":platform:publishPlatformPublicationToTestRepository")
+
+    // Then
+    val repo = gradleProject.singleArtifact("platform", "repo/com/example/platform/platform/0.1")
+    with(repo.asPath) {
+      assertThat(this).exists().isDirectory()
+      assertThat(resolve("platform-0.1.pom")).exists().isRegularFile()
+
+      val module = resolve("platform-0.1.module")
+      assertThat(module).exists().isRegularFile()
+      assertThat(module.readText().trim()).isEqualTo(fixture.expectedModuleFileContents())
+    }
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("gradleVersionsForAndroid")
+  fun `does not crash building provenance for dependencies with rich versions`(gradleVersion: GradleVersion) {
+    // Given
+    val fixture = RichVersionsFixture(gradleVersion)
     val gradleProject = fixture.build()
 
     // When
