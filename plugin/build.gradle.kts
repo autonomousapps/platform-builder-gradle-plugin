@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.autonomousapps.platform-builder"
-version = "0.6"
+version = "0.7-SNAPSHOT"
 
 val isSnapshot: Boolean = version.toString().endsWith("SNAPSHOT")
 val isRelease: Boolean = !isSnapshot
