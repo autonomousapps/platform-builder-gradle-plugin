@@ -1,5 +1,8 @@
 **Platform Builder Gradle Plugin** Changelog
 
+## Version 0.5
+* [fix]: support determining provenance with rich-version detection heuristic.
+
 ## Version 0.4
 * [feat]: track provenance.
 * [feat]: support local Android libraries as source of constraints.
