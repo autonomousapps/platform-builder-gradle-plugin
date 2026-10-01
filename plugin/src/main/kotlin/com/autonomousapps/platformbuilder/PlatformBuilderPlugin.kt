@@ -30,6 +30,7 @@ import com.autonomousapps.platformbuilder.internal.utils.attributes.isJavaPlatfo
 import com.autonomousapps.platformbuilder.internal.utils.classpath.isAgpAvailable
 import com.autonomousapps.platformbuilder.internal.utils.classpath.isKgpAvailable
 import com.autonomousapps.platformbuilder.internal.utils.configurations.ConfigurationServices
+import com.autonomousapps.platformbuilder.internal.utils.dependencies.isRichVersionRequest
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
 import com.autonomousapps.platformbuilder.internal.utils.provenance.buildReason
 import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForConstraints
@@ -46,7 +47,6 @@ import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.api.artifacts.ResolvableConfiguration
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
-import org.gradle.api.artifacts.component.ModuleComponentSelector
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.dsl.DependencyConstraintFactory
 import org.gradle.api.artifacts.dsl.DependencyFactory
@@ -412,6 +412,8 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
             // If the selected component is the requested component, then we can say that the requested component's
             // incoming edge is the "reason" for it—this helps us track provenance.
+            // If the selected component is NOT the requested component, but the request is for a *rich version*, then
+            // there cannot be a strict match, so we say the incoming edge is *a* reason. We track multiple reasons.
             // nb: difference from Gradle PR (it has no support for tracking provenance)
             // nb: strict matching is imperfect (doesn't handle dynamic versions)
             // https://github.com/gradle/gradle/blob/v9.8.0/platforms/software/dependency-management/src/main/java/org/gradle/internal/component/external/model/DefaultModuleComponentSelector.java#L144
@@ -436,25 +438,4 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       )
     }
   }
-}
-
-/**
- * A heuristic to determine if a dependency is requested with a rich version.
- *
- * @see <a href="https://docs.gradle.org/current/userguide/dependency_versions.html>Rich versions</a>
- */
-internal fun ResolvedDependencyResult.isRichVersionRequest(): Boolean {
-  val requested = requested as? ModuleComponentSelector ?: return false
-
-  val constraint = requested.versionConstraint
-  val hasPreferredVersion = constraint.preferredVersion.isNotEmpty()
-  val hasStrictVersion = constraint.strictVersion.isNotEmpty()
-
-  if (hasPreferredVersion || hasStrictVersion) {
-    return true
-  }
-
-  // TODO: extract as static variable
-  val richSignals = setOf("[", "]", "(", ")", ",", "+", "latest.")
-  return richSignals.any { signal -> constraint.requiredVersion.contains(signal) }
 }
