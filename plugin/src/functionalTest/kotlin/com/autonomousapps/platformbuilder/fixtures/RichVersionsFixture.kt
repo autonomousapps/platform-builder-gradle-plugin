@@ -9,38 +9,14 @@ internal class RichVersionsFixture(
   gradleVersion: GradleVersion,
 ) : AbstractFixture(gradleVersion) {
 
-  fun build(): GradleProject {
-    return newGradleProjectBuilder()
-      .withSubproject("platform") {
-        withBuildScript {
-          plugins(PLATFORM_BUILDER_PLUGIN)
-          group = "com.example.platform"
-          version = "0.1"
-
-          // com.google.ads.mediation:ironsource:9.3.0.1
-          // \-- com.unity3d.ads-mediation:mediation-sdk:9.3.0
-          //     \-- com.unity3d.ads-mediation:adquality-sdk:[9.2.1,9.3.0)
-          dependencies(platformApi("com.google.ads.mediation:ironsource:9.3.0.1"))
-          withGroovy(
-            """
-              platformBuilder {
-                enablePublishing()
-              }
-              
-              publishing {
-                repositories {
-                  maven {
-                    name = "test"
-                    url = uri(layout.buildDirectory.dir("repo"))
-                  }
-                }
-              }
-            """.trimIndent()
-          )
-        }
-      }
-      .write()
-  }
+  fun build(): GradleProject = newGradleProjectBuilder()
+    .withPlatformBuilder(
+      // com.google.ads.mediation:ironsource:9.3.0.1
+      // \-- com.unity3d.ads-mediation:mediation-sdk:9.3.0
+      //     \-- com.unity3d.ads-mediation:adquality-sdk:[9.2.1,9.3.0)
+      platformApi("com.google.ads.mediation:ironsource:9.3.0.1")
+    )
+    .write()
 
   fun expectedModuleFileContents(): String {
     return """

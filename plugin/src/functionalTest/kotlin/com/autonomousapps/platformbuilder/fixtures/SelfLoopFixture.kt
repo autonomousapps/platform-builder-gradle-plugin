@@ -9,44 +9,20 @@ internal class SelfLoopFixture(
   gradleVersion: GradleVersion,
 ) : AbstractFixture(gradleVersion) {
 
-  fun build(): GradleProject {
-    return newGradleProjectBuilder()
-      .withSubproject("platform") {
-        withBuildScript {
-          plugins(PLATFORM_BUILDER_PLUGIN)
-          group = "com.example.platform"
-          version = "0.1"
-
-          // The GMM for this dependency contains a self-constraint
-          // "dependencyConstraints": [
-          //   {
-          //     "group": "androidx.media3",
-          //     "module": "media3-common",
-          //     "version": {
-          //       "requires": "1.11.1"
-          //     }
-          //   }
-          dependencies(platformApi("androidx.media3:media3-common:1.11.1"))
-          withGroovy(
-            """
-              platformBuilder {
-                enablePublishing()
-              }
-              
-              publishing {
-                repositories {
-                  maven {
-                    name = "test"
-                    url = uri(layout.buildDirectory.dir("repo"))
-                  }
-                }
-              }
-            """.trimIndent()
-          )
-        }
-      }
-      .write()
-  }
+  fun build(): GradleProject = newGradleProjectBuilder()
+    .withPlatformBuilder(
+      // The GMM for this dependency contains a self-constraint
+      // "dependencyConstraints": [
+      //   {
+      //     "group": "androidx.media3",
+      //     "module": "media3-common",
+      //     "version": {
+      //       "requires": "1.11.1"
+      //     }
+      //   }
+      platformApi("androidx.media3:media3-common:1.11.1")
+    )
+    .write()
 
   fun expectedModuleFileContents(): String {
     return """

@@ -4,6 +4,7 @@ package com.autonomousapps.platformbuilder.fixtures
 
 import com.autonomousapps.kit.AbstractGradleProject
 import com.autonomousapps.kit.GradleProject
+import com.autonomousapps.kit.Subproject
 import com.autonomousapps.kit.gradle.Dependency
 import com.autonomousapps.kit.gradle.GradleProperties
 import com.autonomousapps.kit.gradle.Plugin
@@ -66,5 +67,45 @@ internal abstract class AbstractFixture(
           plugins(PLATFORM_BUILDER, AGP, KGP)
         }
       }
+  }
+
+  fun GradleProject.Builder.withPlatformBuilder(
+    vararg dependencies: Dependency,
+  ): GradleProject.Builder = withPlatformBuilder {
+    withBuildScript {
+      dependencies(*dependencies)
+    }
+  }
+
+  /** Standard platform-builder module layout. */
+  fun GradleProject.Builder.withPlatformBuilder(
+    path: String = "platform",
+    block: Subproject.Builder.() -> Unit = {},
+  ): GradleProject.Builder {
+    val path = path.removePrefix(":")
+    return withSubproject(path) {
+      withBuildScript {
+        plugins(PLATFORM_BUILDER_PLUGIN)
+        group = "com.example.platform"
+        version = "0.1"
+        withGroovy(
+          """
+              platformBuilder {
+                enablePublishing()
+              }
+              
+              publishing {
+                repositories {
+                  maven {
+                    name = "test"
+                    url = uri(layout.buildDirectory.dir("repo"))
+                  }
+                }
+              }
+            """.trimIndent()
+        )
+      }
+      block()
+    }
   }
 }
