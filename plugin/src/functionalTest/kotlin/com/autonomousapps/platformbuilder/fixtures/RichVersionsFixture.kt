@@ -3,15 +3,11 @@
 package com.autonomousapps.platformbuilder.fixtures
 
 import com.autonomousapps.kit.GradleProject
-import com.autonomousapps.kit.gradle.Dependency.Companion.implementation
 import org.gradle.util.GradleVersion
 
 internal class RichVersionsFixture(
   gradleVersion: GradleVersion,
 ) : AbstractFixture(gradleVersion) {
-
-  // note that this being `implementation` means the platform will treat this as _runtime constraints_
-  private val okio = implementation("com.squareup.okio:okio:3.18.2")
 
   fun build(): GradleProject {
     return newGradleProjectBuilder()

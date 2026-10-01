@@ -420,7 +420,10 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
             val isRequested = dependency.requested.matchesStrictly(selectedComponent.id)
             if (isRequested || dependency.isRichVersionRequest()) {
               val incomingEdge = dependency.from.id
-              provenance.putEdge(incomingEdge, selectedComponent.id)
+              // Components can publish self-constraints, and our graph doesn't permit self-loops.
+              if (incomingEdge != selectedComponent.id) {
+                provenance.putEdge(incomingEdge, selectedComponent.id)
+              }
             }
           } else if (dependency is UnresolvedDependencyResult) {
             throw GradleException("Failed to build platform.", dependency.failure)
