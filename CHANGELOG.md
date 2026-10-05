@@ -1,5 +1,8 @@
 **Platform Builder Gradle Plugin** Changelog
 
+## Version 0.7
+* [fix]: make provenance code more performant. Stop hydrating `runtimeElements` with provenance from `apiElements`.
+
 ## Version 0.6
 * [fix]: check for self-references and don't include them in the provenance graph.
 
