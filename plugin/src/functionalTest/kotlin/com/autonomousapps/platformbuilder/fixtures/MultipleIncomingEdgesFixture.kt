@@ -209,7 +209,7 @@ internal class MultipleIncomingEdgesFixture(
                 "version": {
                   "requires": "2.4.10"
                 },
-                "reason": "Required by project ':producer-android', project ':producer-kotlin'"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains",
@@ -217,7 +217,7 @@ internal class MultipleIncomingEdgesFixture(
                 "version": {
                   "requires": "13.0"
                 },
-                "reason": "Required by project ':producer-android', project ':producer-kotlin'"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.squareup.okio",

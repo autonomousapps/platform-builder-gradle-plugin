@@ -155,7 +155,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "0.8.0-0.6.x-compat"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.squareup.okio",
@@ -163,7 +163,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "3.18.2"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlinx",
@@ -171,7 +171,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "0.8.0-0.6.x-compat"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlin",
@@ -179,7 +179,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "2.1.21"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.squareup.okio",
@@ -187,7 +187,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "3.18.2"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains",
@@ -195,7 +195,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "13.0"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.squareup.okio",
@@ -203,7 +203,7 @@ internal class KotlinxDateTimeFixture(
                 "version": {
                   "requires": "3.18.2"
                 },
-                "reason": "Required by com.squareup.okio:okio-fakefilesystem:3.18.2"
+                "reason": "Required by project ':platform'"
               }
             ]
           }

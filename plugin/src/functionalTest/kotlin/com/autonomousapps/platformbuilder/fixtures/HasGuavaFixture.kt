@@ -201,7 +201,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "1.0.3"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-android"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jspecify",
@@ -209,7 +209,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-android"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.google.errorprone",
@@ -217,7 +217,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "2.41.0"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-android"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.google.j2objc",
@@ -225,7 +225,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.1"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-android"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okhttp3",
@@ -233,7 +233,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -241,7 +241,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "2.2.21"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -249,7 +249,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains",
@@ -257,7 +257,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "13.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -265,7 +265,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okhttp3",
@@ -273,7 +273,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",
@@ -448,7 +448,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "1.0.3"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jspecify",
@@ -456,7 +456,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.google.errorprone",
@@ -464,7 +464,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "2.41.0"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.google.j2objc",
@@ -472,7 +472,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.1"
               },
-              "reason": "Required by com.google.guava:guava:33.5.0-jre"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okhttp3",
@@ -480,7 +480,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -488,7 +488,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "2.2.21"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -496,7 +496,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains",
@@ -504,7 +504,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "13.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -512,7 +512,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okhttp3",
@@ -520,7 +520,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",
@@ -663,7 +663,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -671,7 +671,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "2.2.21"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -679,7 +679,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains",
@@ -687,7 +687,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "13.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -695,7 +695,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okhttp3",
@@ -703,7 +703,7 @@ internal class HasGuavaFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",

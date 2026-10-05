@@ -353,7 +353,7 @@ internal class KmpFixture(
                 "org.gradle.category": "platform"
               },
               "endorseStrictVersions": true,
-              "reason": "Required by androidx.compose.material:material-icons-core-desktop:1.7.8, androidx.compose.material:material-icons-core:1.7.8, androidx.compose.runtime:runtime-desktop:1.6.0, androidx.compose.runtime:runtime-saveable-desktop:1.6.0, androidx.compose.runtime:runtime-saveable:1.6.0, androidx.compose.runtime:runtime:1.6.0, androidx.compose.ui:ui-desktop:1.6.0, androidx.compose.ui:ui-geometry-desktop:1.6.0, androidx.compose.ui:ui-geometry:1.6.0, androidx.compose.ui:ui-graphics-desktop:1.6.0, androidx.compose.ui:ui-graphics:1.6.0, androidx.compose.ui:ui-text-desktop:1.6.0, androidx.compose.ui:ui-text:1.6.0, androidx.compose.ui:ui-unit-desktop:1.6.0, androidx.compose.ui:ui-unit:1.6.0, androidx.compose.ui:ui-util-desktop:1.6.0, androidx.compose.ui:ui-util:1.6.0, androidx.compose.ui:ui:1.6.0, org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1, org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1, org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.1"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlinx",
@@ -383,7 +383,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.7.8"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -391,7 +391,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -399,7 +399,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.8.20"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -407,7 +407,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.8.20"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -415,7 +415,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains",
@@ -423,7 +423,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "23.0.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",
@@ -431,7 +431,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.7.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.runtime",
@@ -439,7 +439,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.runtime",
@@ -447,7 +447,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -455,7 +455,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -463,7 +463,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -471,7 +471,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -479,7 +479,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -487,7 +487,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -495,7 +495,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.8.20"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlinx",
@@ -503,7 +503,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.7.1"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlinx",
@@ -511,7 +511,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.7.1"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.skiko",
@@ -519,7 +519,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "0.7.7"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -527,7 +527,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -535,7 +535,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -543,7 +543,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -551,7 +551,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.ui",
@@ -559,7 +559,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",
@@ -567,7 +567,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.7.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.runtime",
@@ -575,7 +575,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.compose.runtime",
@@ -583,7 +583,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.6.0"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -591,7 +591,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.8.20"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlinx",
@@ -599,7 +599,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "1.7.1"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.skiko",
@@ -607,7 +607,7 @@ internal class KmpFixture(
               "version": {
                 "requires": "0.7.7"
               },
-              "reason": "Required by androidx.compose.material:material-icons-core:1.7.8"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.collection",
