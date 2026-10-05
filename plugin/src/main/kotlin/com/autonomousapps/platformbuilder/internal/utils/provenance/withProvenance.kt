@@ -8,6 +8,7 @@ import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.api.provider.Provider
 
+// TODO fix or delete
 internal fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceForConstraints(
   apiConstraints: Provider<Collection<ReasonedDependencyConstraint>>
 ): Provider<List<DependencyConstraint>> {
@@ -21,6 +22,7 @@ internal fun Provider<Collection<ReasonedDependencyConstraint>>.withProvenanceFo
   }
 }
 
+// TODO fix or delete
 internal fun Provider<Collection<ReasonedDependency>>.withProvenanceForDependencies(
   apiDependencies: Provider<Collection<ReasonedDependency>>
 ): Provider<List<Dependency>> {

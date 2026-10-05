@@ -32,9 +32,7 @@ import com.autonomousapps.platformbuilder.internal.utils.classpath.isKgpAvailabl
 import com.autonomousapps.platformbuilder.internal.utils.configurations.ConfigurationServices
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.isRichVersionRequest
 import com.autonomousapps.platformbuilder.internal.utils.dependencies.newProjectDependency
-import com.autonomousapps.platformbuilder.internal.utils.provenance.buildReason
-import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForConstraints
-import com.autonomousapps.platformbuilder.internal.utils.provenance.withProvenanceForDependencies
+import com.autonomousapps.platformbuilder.internal.utils.provenance.Provenance
 import com.google.common.graph.ElementOrder
 import com.google.common.graph.GraphBuilder
 import com.google.common.graph.ImmutableGraph
@@ -154,22 +152,22 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       jvmPluginServices.configureAsAndroidRuntimeClasspath(c)
     }
 
-    val javaApiDependenciesResult = getDependencies(apiClasspath)
-    val androidApiDependenciesResult = getDependencies(androidApiClasspath)
-    val javaApiConstraints = javaApiDependenciesResult.map(GetDependenciesResult::constraints)
-    val javaApiDependencies = javaApiDependenciesResult.map(GetDependenciesResult::dependencies)
-    val androidApiConstraints = androidApiDependenciesResult.map(GetDependenciesResult::constraints)
-    val androidApiDependencies = androidApiDependenciesResult.map(GetDependenciesResult::dependencies)
-
     // Resolve the platform graphs and add them as dependency constraints to the platform variants.
     configurations.named(JavaPlatformPlugin.API_CONFIGURATION_NAME).configure { c ->
-      c.dependencyConstraints.addAllLater(javaApiConstraints.map { constraints -> constraints.map { it.dependencyConstraint } })
+      val javaDependenciesResult = getDependencies(apiClasspath)
+      val androidDependenciesResult = getDependencies(androidApiClasspath)
+      val javaConstraints = javaDependenciesResult.map(GetDependenciesResult::constraints)
+      val javaDependencies = javaDependenciesResult.map(GetDependenciesResult::dependencies)
+      val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
+      val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
+
+      c.dependencyConstraints.addAllLater(javaConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-      c.dependencies.addAllLater(javaApiDependencies.map { dependencies -> dependencies.map { it.dependency } })
+      c.dependencies.addAllLater(javaDependencies.map { it.map(ReasonedDependency::dependency) })
 
       // nb: difference from Gradle PR (it has no support for Android library dependencies)
-      c.dependencyConstraints.addAllLater(androidApiConstraints.map { it.map { it.dependencyConstraint } })
-      c.dependencies.addAllLater(androidApiDependencies.map { it.map { it.dependency } })
+      c.dependencyConstraints.addAllLater(androidConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
+      c.dependencies.addAllLater(androidDependencies.map { it.map(ReasonedDependency::dependency) })
     }
 
     // The runtime graph requires special consideration re the `because` (provenance) string. See note on the
@@ -177,26 +175,19 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
     // nb: difference from Gradle PR (it has no support for tracking provenance)
     configurations.named(JavaPlatformPlugin.RUNTIME_CONFIGURATION_NAME).configure { c ->
       val javaDependenciesResult = getDependencies(runtimeClasspath)
+      val androidDependenciesResult = getDependencies(androidRuntimeClasspath)
       val javaConstraints = javaDependenciesResult.map(GetDependenciesResult::constraints)
       val javaDependencies = javaDependenciesResult.map(GetDependenciesResult::dependencies)
-
-      val androidDependenciesResult = getDependencies(androidRuntimeClasspath)
       val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
       val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      // nb: difference from Gradle PR (it has no support for tracking provenance)
-      val jConstraints = javaConstraints.withProvenanceForConstraints(javaApiConstraints)
-      val jDependencies = javaDependencies.withProvenanceForDependencies(javaApiDependencies)
-      val aConstraints = androidConstraints.withProvenanceForConstraints(androidApiConstraints)
-      val aDependencies = androidDependencies.withProvenanceForDependencies(androidApiDependencies)
-
-      c.dependencyConstraints.addAllLater(jConstraints)
+      c.dependencyConstraints.addAllLater(javaConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-      c.dependencies.addAllLater(jDependencies)
+      c.dependencies.addAllLater(javaDependencies.map { it.map(ReasonedDependency::dependency) })
 
       // nb: difference from Gradle PR (it has no support for Android library dependencies)
-      c.dependencyConstraints.addAllLater(aConstraints)
-      c.dependencies.addAllLater(aDependencies)
+      c.dependencyConstraints.addAllLater(androidConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
+      c.dependencies.addAllLater(androidDependencies.map { it.map(ReasonedDependency::dependency) })
     }
 
     // nb: difference from Gradle PR (it has no support for Android library dependencies nor Kotlin)
@@ -253,13 +244,12 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       }
       .map { root ->
         val result = getComponentIds(root)
-        val rootId = root.component.id
-        val provenance = result.provenance
+        val provenance = Provenance(root.component.id, result.provenance)
 
         val constraints = result.regularComponents.stream()
           .filter(excludeGuava)
           .map { thisId ->
-            val reason = buildReason(rootId = rootId, thisId = thisId, provenance = provenance)
+            val reason = provenance.buildReason(thisId)
 
             when (thisId) {
               is ModuleComponentIdentifier -> {
@@ -290,7 +280,7 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
         val dependencies = result.platformComponents.stream()
           .filter(excludeGuava)
           .map { thisId ->
-            val reason = buildReason(rootId = rootId, thisId = thisId, provenance = provenance)
+            val reason = provenance.buildReason(thisId)
 
             when (thisId) {
               is ModuleComponentIdentifier -> {

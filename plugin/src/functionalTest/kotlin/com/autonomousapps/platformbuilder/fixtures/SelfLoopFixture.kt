@@ -120,7 +120,7 @@ internal class SelfLoopFixture(
                 "version": {
                   "requires": "1.3.1"
                 },
-                "reason": "Required by androidx.media3:media3-common:1.11.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.guava",
@@ -128,7 +128,7 @@ internal class SelfLoopFixture(
                 "version": {
                   "requires": "1.0.2"
                 },
-                "reason": "Required by androidx.media3:media3-common:1.11.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlin",
@@ -136,7 +136,7 @@ internal class SelfLoopFixture(
                 "version": {
                   "requires": "1.7.10"
                 },
-                "reason": "Required by androidx.media3:media3-common:1.11.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlin",
@@ -144,7 +144,7 @@ internal class SelfLoopFixture(
                 "version": {
                   "requires": "1.7.10"
                 },
-                "reason": "Required by androidx.media3:media3-common:1.11.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains",
@@ -152,7 +152,7 @@ internal class SelfLoopFixture(
                 "version": {
                   "requires": "13.0"
                 },
-                "reason": "Required by androidx.media3:media3-common:1.11.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.annotation",

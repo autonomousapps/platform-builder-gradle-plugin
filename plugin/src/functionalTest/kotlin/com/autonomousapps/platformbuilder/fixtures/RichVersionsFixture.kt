@@ -436,7 +436,7 @@ internal class RichVersionsFixture(
                   "org.gradle.category": "platform"
                 },
                 "endorseStrictVersions": true,
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1, com.google.android.gms:play-services-ads-api:24.9.0, com.google.android.gms:play-services-ads:24.9.0, org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0, org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.8.0, org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlinx",
@@ -466,7 +466,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "9.3.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.annotation",
@@ -474,7 +474,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.8.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -482,7 +482,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "24.9.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlin",
@@ -490,7 +490,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.1.10"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.unity3d.ads-mediation",
@@ -498,7 +498,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "9.2.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.annotation",
@@ -506,7 +506,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.8.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.browser",
@@ -514,7 +514,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.8.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.collection",
@@ -522,7 +522,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.core",
@@ -530,7 +530,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.10.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.datastore",
@@ -538,7 +538,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.privacysandbox.ads",
@@ -546,7 +546,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0-beta05"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.privacysandbox.ads",
@@ -554,7 +554,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0-beta05"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.webkit",
@@ -562,7 +562,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.12.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -570,7 +570,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "24.9.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -578,7 +578,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "18.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -586,7 +586,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "16.0.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -594,7 +594,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "18.9.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -602,7 +602,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "18.2.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlinx",
@@ -610,7 +610,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.8.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlinx",
@@ -618,7 +618,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.8.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains",
@@ -626,7 +626,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "23.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.annotation",
@@ -634,7 +634,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.4.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.lifecycle",
@@ -642,7 +642,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.3.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.versionedparcelable",
@@ -650,7 +650,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.1.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.datastore",
@@ -658,7 +658,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.work",
@@ -666,7 +666,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.7.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -674,7 +674,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "20.1.2"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.ump",
@@ -682,7 +682,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "3.2.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -690,7 +690,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "18.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.fragment",
@@ -698,7 +698,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "org.jetbrains.kotlinx",
@@ -706,7 +706,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.8.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.arch.core",
@@ -714,7 +714,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.lifecycle",
@@ -722,7 +722,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.3.1"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.arch.core",
@@ -730,7 +730,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.lifecycle",
@@ -738,7 +738,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.startup",
@@ -746,7 +746,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "com.google.android.gms",
@@ -754,7 +754,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "20.1.2"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.viewpager",
@@ -762,7 +762,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.loader",
@@ -770,7 +770,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.activity",
@@ -778,7 +778,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.lifecycle",
@@ -786,7 +786,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.lifecycle",
@@ -794,7 +794,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "2.1.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.customview",
@@ -802,7 +802,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.savedstate",
@@ -810,7 +810,7 @@ internal class RichVersionsFixture(
                 "version": {
                   "requires": "1.0.0"
                 },
-                "reason": "Required by com.google.ads.mediation:ironsource:9.3.0.1"
+                "reason": "Required by project ':platform'"
               },
               {
                 "group": "androidx.concurrent",

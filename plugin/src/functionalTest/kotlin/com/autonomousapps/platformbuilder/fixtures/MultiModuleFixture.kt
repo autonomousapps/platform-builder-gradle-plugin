@@ -451,7 +451,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",
@@ -459,7 +459,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.2.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.annotation",
@@ -467,7 +467,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.4.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.collection",
@@ -475,7 +475,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.1.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.core",
@@ -483,7 +483,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.7.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.fragment",
@@ -491,7 +491,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.1.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.recyclerview",
@@ -499,7 +499,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.3.1"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains.kotlin",
@@ -507,7 +507,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.2.21"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -515,7 +515,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.lifecycle",
@@ -523,7 +523,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.3.1"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.versionedparcelable",
@@ -531,7 +531,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.1.1"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.viewpager",
@@ -539,7 +539,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.loader",
@@ -547,7 +547,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.activity",
@@ -555,7 +555,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.lifecycle",
@@ -563,7 +563,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.1.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.customview",
@@ -571,7 +571,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "org.jetbrains",
@@ -579,7 +579,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "13.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "com.squareup.okio",
@@ -587,7 +587,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "3.18.1"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.arch.core",
@@ -595,7 +595,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.lifecycle",
@@ -603,7 +603,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.3.1"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.arch.core",
@@ -611,7 +611,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.1.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.lifecycle",
@@ -619,7 +619,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.savedstate",
@@ -627,7 +627,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "1.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.lifecycle",
@@ -635,7 +635,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "2.0.0"
               },
-              "reason": "Required by androidx.viewpager2:viewpager2:1.1.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.concurrent",
@@ -667,7 +667,7 @@ internal class MultiModuleFixture(
               "version": {
                 "requires": "5.5.0"
               },
-              "reason": "Required by com.squareup.okhttp3:okhttp:5.5.0"
+              "reason": "Required by project ':platform'"
             },
             {
               "group": "androidx.startup",
