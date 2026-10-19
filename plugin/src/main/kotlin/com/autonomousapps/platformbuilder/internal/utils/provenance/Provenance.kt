@@ -25,9 +25,11 @@ internal class Provenance(
   private val directChildren by lazy(LazyThreadSafetyMode.NONE) { provenance.children(rootId) }
   private val theRoot by lazy(LazyThreadSafetyMode.NONE) { setOf(rootId) }
 
-  fun buildReason(thisId: ComponentIdentifier): String = buildReason(computeDirectContributors(thisId))
+  fun buildReason(thisId: ComponentIdentifier): String? = buildReason(computeDirectContributors(thisId))
 
-  private fun buildReason(incomingEdges: Set<ComponentIdentifier>): String {
+  private fun buildReason(incomingEdges: Set<ComponentIdentifier>): String? {
+    if (incomingEdges.isEmpty()) return null
+
     return incomingEdges
       .mapTo(sortedSetOf()) { it.consistentDisplayName }
       .joinToString(prefix = "Required by ", separator = ", ")
@@ -37,6 +39,11 @@ internal class Provenance(
     // `thisId` is a directly declared constraint, so we return just the root as the provenance.
     if (thisId in directChildren) {
       return theRoot
+    }
+
+    // TODO: add test case
+    if (thisId !in reversedGraph.nodes()) {
+      return emptySet()
     }
 
     // This will include the *root* node, which we only want to report if there is a direct edge connecting the root
