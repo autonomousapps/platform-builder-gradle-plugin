@@ -19,8 +19,6 @@ import com.android.build.api.attributes.BuildTypeAttr
 import com.autonomousapps.platformbuilder.PlatformBuilderPlugin.ComponentAndVariant.Kind
 import com.autonomousapps.platformbuilder.internal.model.GetComponentIdsResult
 import com.autonomousapps.platformbuilder.internal.model.GetDependenciesResult
-import com.autonomousapps.platformbuilder.internal.model.ReasonedDependency
-import com.autonomousapps.platformbuilder.internal.model.ReasonedDependencyConstraint
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AarJarCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidBuildTypeCompatibilityRule
 import com.autonomousapps.platformbuilder.internal.utils.attributes.AndroidBuildTypeDisambiguationRule
@@ -161,13 +159,13 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
       val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      c.dependencyConstraints.addAllLater(javaConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
+      c.dependencyConstraints.addAllLater(javaConstraints)
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-      c.dependencies.addAllLater(javaDependencies.map { it.map(ReasonedDependency::dependency) })
+      c.dependencies.addAllLater(javaDependencies)
 
       // nb: difference from Gradle PR (it has no support for Android library dependencies)
-      c.dependencyConstraints.addAllLater(androidConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
-      c.dependencies.addAllLater(androidDependencies.map { it.map(ReasonedDependency::dependency) })
+      c.dependencyConstraints.addAllLater(androidConstraints)
+      c.dependencies.addAllLater(androidDependencies)
     }
 
     // The runtime graph requires special consideration re the `because` (provenance) string. See note on the
@@ -181,13 +179,13 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
       val androidConstraints = androidDependenciesResult.map(GetDependenciesResult::constraints)
       val androidDependencies = androidDependenciesResult.map(GetDependenciesResult::dependencies)
 
-      c.dependencyConstraints.addAllLater(javaConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
+      c.dependencyConstraints.addAllLater(javaConstraints)
       // nb: difference from Gradle PR (it has no support for direct platform dependencies)
-      c.dependencies.addAllLater(javaDependencies.map { it.map(ReasonedDependency::dependency) })
+      c.dependencies.addAllLater(javaDependencies)
 
       // nb: difference from Gradle PR (it has no support for Android library dependencies)
-      c.dependencyConstraints.addAllLater(androidConstraints.map { it.map(ReasonedDependencyConstraint::dependencyConstraint) })
-      c.dependencies.addAllLater(androidDependencies.map { it.map(ReasonedDependency::dependency) })
+      c.dependencyConstraints.addAllLater(androidConstraints)
+      c.dependencies.addAllLater(androidDependencies)
     }
 
     // nb: difference from Gradle PR (it has no support for Android library dependencies nor Kotlin)
@@ -253,21 +251,17 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
             when (thisId) {
               is ModuleComponentIdentifier -> {
-                val constraint = dependencyConstraintFactory
+                dependencyConstraintFactory
                   .create("${thisId.group}:${thisId.module}:${thisId.version}")
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
-                  .apply { because(reason) }
-
-                ReasonedDependencyConstraint(constraint, reason)
+                  .apply { reason?.let { because(it) } }
               }
 
               is ProjectComponentIdentifier -> {
-                val constraint = dependencyConstraintFactory
+                dependencyConstraintFactory
                   .create(newProjectDependency(thisId.projectPath))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
-                  .apply { because(reason) }
-
-                ReasonedDependencyConstraint(constraint, reason)
+                  .apply { reason?.let { because(it) } }
               }
 
               else -> {
@@ -284,21 +278,17 @@ public abstract class PlatformBuilderPlugin @Inject constructor(
 
             when (thisId) {
               is ModuleComponentIdentifier -> {
-                val dependency = dependencyHandler
+                dependencyHandler
                   .platform(dependencyFactory.create("${thisId.group}:${thisId.module}:${thisId.version}"))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
-                  .apply { because(reason) }
-
-                ReasonedDependency(dependency, reason)
+                  .apply { reason?.let { because(it) } }
               }
 
               is ProjectComponentIdentifier -> {
-                val dependency = dependencyHandler
+                dependencyHandler
                   .platform(newProjectDependency(thisId.projectPath))
                   // nb: difference from Gradle PR (it has no support for tracking provenance)
-                  .apply { because(reason) }
-
-                ReasonedDependency(dependency, reason)
+                  .apply { reason?.let { because(it) } }
               }
 
               else -> {
